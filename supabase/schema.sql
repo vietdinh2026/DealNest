@@ -117,6 +117,17 @@ create policy "public read submissions" on submissions for select using (true);
 drop policy if exists "public read votes" on votes;
 create policy "public read votes" on votes for select using (true);
 
+-- ---------- Table privileges ----------
+-- RLS policies alone are NOT enough: the anon/authenticated roles also
+-- need SELECT privileges on the tables, otherwise every read fails with
+-- "permission denied for table ..." (PostgREST error 42501).
+grant select on public.stores to anon, authenticated;
+grant select on public.coupons to anon, authenticated;
+grant select on public.votes to anon, authenticated;
+grant select on public.clicks to anon, authenticated;
+grant select on public.reports to anon, authenticated;
+grant select on public.submissions to anon, authenticated;
+
 -- ---------- Seed data: SAMPLE starter catalog ----------
 -- 12 sample US stores/coupons. Codes are SAMPLE codes, not real
 -- working codes. is_verified is FALSE for every seed coupon — the
@@ -140,7 +151,7 @@ on conflict (slug) do nothing;
 insert into coupons (store_id, title, code, description, discount_type, discount_value, affiliate_url, affiliate_network, category, expires_at, is_verified, status)
 select s.id,
        c.title, c.code, c.description, c.discount_type, c.discount_value,
-       c.affiliate_url, c.affiliate_network, c.category, c.expires_at, false, 'active'
+       c.affiliate_url, c.affiliate_network, c.category, c.expires_at::timestamptz, false, 'active'
 from stores s
 join (values
   ('nike',     '20% Off Sitewide',                 'JUSTDOIT20', 'Save 20% on full-price shoes, apparel and gear.', 'percent', 20, 'https://www.nike.com', 'ShareASale', 'Fashion', '2027-01-31 23:59:59+00'),

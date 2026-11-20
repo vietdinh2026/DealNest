@@ -14,12 +14,6 @@ import {
 
 export const dynamic = "force-dynamic";
 
-/**
- * TODO (SECURITY): /admin currently has NO authentication — anyone with
- * the link can add/edit/delete coupons. Add a password (e.g. Vercel
- * middleware checking a cookie set by a login form, or Supabase Auth)
- * BEFORE putting this site on a real domain. See README.md.
- */
 export default async function AdminPage() {
   if (!isSupabaseConfigured()) {
     return (
@@ -53,13 +47,6 @@ export default async function AdminPage() {
 
   return (
     <div>
-      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-        <strong>Security reminder:</strong> this admin area has no login yet. Add a
-        password before going live — see the TODO in{" "}
-        <code className="rounded bg-red-100 px-1">src/app/admin/page.tsx</code> and the
-        README.
-      </div>
-
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold">Owner Admin</h1>

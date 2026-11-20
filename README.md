@@ -95,18 +95,22 @@ git push -u origin main
 - Vercel sends `Authorization: Bearer <CRON_SECRET>` automatically; the
   route rejects requests without a matching secret.
 
-### 6. ⚠️ Add an admin password BEFORE going live
+### 6. Admin login (password protection for /admin)
 
-`/admin` currently has **no login** — anyone with the link can edit coupons.
-Before putting the site on a real domain, protect it. The simplest options:
+`/admin` is protected by a single-owner password:
 
-- **Vercel middleware + cookie:** add `middleware.ts` that checks for a
-  cookie set by a small login page, comparing against an
-  `ADMIN_PASSWORD` env var (see the TODO comment in
-  `src/app/admin/page.tsx`).
-- **Supabase Auth:** enable email login and gate `/admin` behind a session.
-- **Vercel Password Protection** (Pro plan): protects the whole site, not
-  just admin — only as a temporary measure.
+- Set the `ADMIN_PASSWORD` env var (Vercel → Settings → Environment
+  Variables) to a strong password, then redeploy.
+- Visiting `/admin` without a session redirects to the login page at
+  `/login`. After login, a httpOnly cookie keeps you logged in for 7 days
+  (there is a **Log out** button at the top of the admin pages).
+- How it is enforced: `middleware.ts` checks the session cookie on every
+  `/admin` request (including server-action POSTs), and
+  `src/app/admin/layout.tsx` double-checks it server-side before rendering.
+  The cookie stores only a SHA-256 hash of the password, never the password
+  itself. If `ADMIN_PASSWORD` is not set, login always fails (fail closed).
+- To change the password, change the env var value and redeploy — all
+  existing sessions stop working immediately.
 
 ---
 
@@ -171,7 +175,7 @@ dealnest-code/
 │   ├── stores/page.tsx       # Browse stores
 │   ├── submit/page.tsx       # Public coupon submission form
 │   ├── disclosure/page.tsx   # FTC Affiliate Disclosure
-│   ├── admin/page.tsx        # Owner admin (TODO: add password!)
+│   ├── admin/page.tsx        # Owner admin (password-protected, see §6)
 │   ├── admin/stats/page.tsx  # Click statistics
 │   └── api/
 │       ├── go/[id]/route.ts        # Click tracking + redirect
