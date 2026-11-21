@@ -4,6 +4,10 @@ import StoreLogo from "@/components/StoreLogo";
 import { getActiveCoupons } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
+// Never cache Supabase reads: without this, Next.js caches the fetch
+// result from the first request and later SQL edits (new codes, new
+// descriptions) would not show up until a redeploy.
+export const revalidate = 0;
 
 export default async function Home({
   searchParams,

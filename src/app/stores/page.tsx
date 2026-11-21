@@ -4,6 +4,10 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Store } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+// Never cache Supabase reads: without this, Next.js caches the fetch
+// result from the first request and later SQL edits (new store
+// descriptions) would not show up until a redeploy.
+export const revalidate = 0;
 
 export default async function StoresPage() {
   let stores: Store[] = [];
