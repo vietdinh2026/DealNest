@@ -2,10 +2,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "DealNest — Verified Coupons & Promo Codes",
   description:
     "Find working coupon codes and deals from top US stores. Save on fashion, beauty, pets, software, home goods and more.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "DealNest — Verified Coupons & Promo Codes",
+    description:
+      "Find working coupon codes and deals from top US stores. Save on fashion, beauty, pets, software, home goods and more.",
+    url: "/",
+    siteName: "DealNest",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

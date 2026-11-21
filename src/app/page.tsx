@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import CouponBoard from "@/components/CouponBoard";
-import StoreLogo from "@/components/StoreLogo";
-import { getActiveCoupons } from "@/lib/data";
+import { getActiveCoupons, getAllStores } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 // Never cache Supabase reads: without this, Next.js caches the fetch
@@ -16,77 +16,56 @@ export default async function Home({
 }) {
   const { coupons, votes } = await getActiveCoupons();
 
-  // When a store is selected (?store=Nike), show that store's header
-  // (logo + name + description) instead of the generic hero. The store
-  // record comes from the coupons' embedded store data — no extra query.
-  const storeName = searchParams?.store;
-  const storeCoupons = storeName
-    ? coupons.filter((c) => c.store?.name === storeName)
-    : [];
-  const store = storeCoupons[0]?.store ?? null;
+  // Legacy store links (?store=Nike) redirect to the canonical
+  // SEO-friendly store page (/stores/nike). The store page is the only
+  // copy of the store header — the homepage must NOT render a second
+  // copy of the same content.
+  const storeParam = searchParams?.store;
+  if (storeParam) {
+    const byName =
+      coupons.find(
+        (c) => c.store?.name?.toLowerCase() === storeParam.toLowerCase()
+      )?.store ?? null;
+    if (byName) redirect(`/stores/${byName.slug}`);
+    // The store may have no active coupons, so look it up directly
+    // by name or slug as a fallback.
+    const stores = await getAllStores();
+    const byStore =
+      stores.find(
+        (s) =>
+          s.name.toLowerCase() === storeParam.toLowerCase() ||
+          s.slug === storeParam.toLowerCase()
+      ) ?? null;
+    if (byStore) redirect(`/stores/${byStore.slug}`);
+    // Unknown store: fall through to the generic hero below.
+  }
 
   return (
     <div>
-      {store ? (
-        <>
-          <Link
-            href="/stores"
-            className="text-sm font-semibold text-brand-700 hover:underline"
+      {/* Hero */}
+      <section className="rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-10 text-white sm:px-10">
+        <h1 className="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
+          Coupons &amp; promo codes that actually work
+        </h1>
+        <p className="mt-3 max-w-xl text-brand-100">
+          Hand-checked deals from top US stores. Click a coupon, copy the code,
+          and save at checkout — our links go straight to the store.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <a
+            href="#coupons"
+            className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-brand-700"
           >
-            ← All stores
+            Browse coupons
+          </a>
+          <Link
+            href="/submit"
+            className="rounded-xl border border-white/40 px-5 py-2.5 text-sm font-semibold text-white"
+          >
+            Submit a coupon
           </Link>
-          <section className="mt-3 rounded-3xl border bg-white p-6 sm:p-8">
-            <div className="flex items-start gap-5">
-              <StoreLogo
-                name={store.name}
-                websiteUrl={store.website_url}
-                size={96}
-              />
-              <div>
-                <h1 className="text-3xl font-extrabold sm:text-4xl">
-                  {store.name}
-                </h1>
-                {store.description && (
-                  <p className="mt-2 max-w-2xl text-slate-600">
-                    {store.description}
-                  </p>
-                )}
-                <p className="mt-3 text-sm text-slate-400">
-                  {store.website_url?.replace(/^https?:\/\//, "")}
-                  {" · "}
-                  {storeCoupons.length} active coupon
-                  {storeCoupons.length === 1 ? "" : "s"}
-                </p>
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        /* Hero */
-        <section className="rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-10 text-white sm:px-10">
-          <h1 className="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
-            Coupons &amp; promo codes that actually work
-          </h1>
-          <p className="mt-3 max-w-xl text-brand-100">
-            Hand-checked deals from top US stores. Click a coupon, copy the code,
-            and save at checkout — our links go straight to the store.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <a
-              href="#coupons"
-              className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-brand-700"
-            >
-              Browse coupons
-            </a>
-            <Link
-              href="/submit"
-              className="rounded-xl border border-white/40 px-5 py-2.5 text-sm font-semibold text-white"
-            >
-              Submit a coupon
-            </Link>
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Real offers banner */}
       <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
@@ -98,11 +77,7 @@ export default async function Home({
       </div>
 
       <div id="coupons" className="mt-8">
-        <CouponBoard
-          coupons={coupons}
-          votes={votes}
-          initialStore={searchParams?.store}
-        />
+        <CouponBoard coupons={coupons} votes={votes} />
       </div>
 
       {/* How it works */}

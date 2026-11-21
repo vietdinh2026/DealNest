@@ -3,10 +3,33 @@ import { getServiceClient, isSupabaseConfigured } from "@/lib/supabase";
 
 /**
  * GET /api/go/:couponId
- * Records one click row, then redirects the visitor to the store's
- * affiliate URL. This is how DealNest tracks outbound clicks for
- * commission reconciliation with each affiliate network.
+ * Records one click row, then redirects the visitor.
+ *
+ * Shop Now rule: for now Shop Now links directly to the store's
+ * homepage (store.website_url), NOT to a deep affiliate link. Later,
+ * when the owner has an affiliate link, they paste it into that
+ * coupon's affiliate_url + affiliate_network in the admin (or SQL)
+ * and Shop Now will use that affiliate link automatically, with no
+ * code change: an affiliate link is used only when affiliate_network
+ * is set AND affiliate_url is set AND affiliate_url is not just the
+ * store homepage; otherwise the visitor goes to the store homepage,
+ * or to "/" if the store has no website URL either.
  */
+function isStoreHomepage(affiliateUrl: string, storeUrl: string): boolean {
+  try {
+    const a = new URL(affiliateUrl);
+    const s = new URL(storeUrl);
+    if (a.origin.toLowerCase() !== s.origin.toLowerCase()) return false;
+    const path = a.pathname.replace(/\/+$/, "");
+    return path === "" && !a.search;
+  } catch {
+    return (
+      affiliateUrl.trim().replace(/\/+$/, "").toLowerCase() ===
+      storeUrl.trim().replace(/\/+$/, "").toLowerCase()
+    );
+  }
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -24,11 +47,11 @@ export async function GET(
 
   const { data: coupon } = await db
     .from("coupons")
-    .select("id, affiliate_url")
+    .select("id, affiliate_url, affiliate_network, store:stores(website_url)")
     .eq("id", params.id)
     .single();
 
-  if (!coupon?.affiliate_url) return NextResponse.redirect(home);
+  if (!coupon) return NextResponse.redirect(home);
 
   // Record the click (best effort — a logging failure must not block the redirect).
   await db.from("clicks").insert({
@@ -36,5 +59,21 @@ export async function GET(
     referrer: req.headers.get("referer"),
   });
 
-  return NextResponse.redirect(coupon.affiliate_url);
+  const rawStore = (coupon as unknown as { store?: unknown }).store;
+  const store = Array.isArray(rawStore) ? rawStore[0] : rawStore;
+  const storeUrl =
+    (store as { website_url?: string | null } | undefined)?.website_url ??
+    null;
+  const affiliateUrl = coupon.affiliate_url?.trim() || null;
+  const hasAffiliateNetwork = Boolean(coupon.affiliate_network?.trim());
+
+  const useAffiliate =
+    hasAffiliateNetwork &&
+    affiliateUrl !== null &&
+    (storeUrl === null || !isStoreHomepage(affiliateUrl, storeUrl));
+
+  const destination = useAffiliate ? affiliateUrl! : storeUrl ?? null;
+  if (!destination) return NextResponse.redirect(home);
+
+  return NextResponse.redirect(destination);
 }

@@ -38,7 +38,7 @@ export default async function StoresPage() {
           {stores.map((s) => (
             <Link
               key={s.id}
-              href={`/?store=${encodeURIComponent(s.name)}`}
+              href={`/stores/${s.slug}`}
               className="rounded-2xl border bg-white p-5 transition hover:shadow-md"
             >
               <div className="flex items-center gap-3">
