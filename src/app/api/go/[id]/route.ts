@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServiceClient, isSupabaseConfigured } from "@/lib/supabase";
+import { supabase, getServiceClient, isSupabaseConfigured } from "@/lib/supabase";
 
 /**
  * GET /api/go/:couponId
@@ -13,7 +13,14 @@ import { getServiceClient, isSupabaseConfigured } from "@/lib/supabase";
  * code change: an affiliate link is used only when affiliate_network
  * is set AND affiliate_url is set AND affiliate_url is not just the
  * store homepage; otherwise the visitor goes to the store homepage,
- * or to "/" if the store has no website URL either.
+ * or to affiliate_url as a last resort, or to "/" if there is no URL
+ * at all.
+ *
+ * The redirect decision uses the public (anon) client — the same
+ * query the public pages already use — so a missing or wrong
+ * SUPABASE_SERVICE_ROLE_KEY can never break Shop Now. The click
+ * log is best-effort only: it tries the service client, and any
+ * failure there is ignored so it can never block the redirect.
  */
 function isStoreHomepage(affiliateUrl: string, storeUrl: string): boolean {
   try {
@@ -38,26 +45,13 @@ export async function GET(
 
   if (!isSupabaseConfigured()) return NextResponse.redirect(home);
 
-  let db;
-  try {
-    db = getServiceClient();
-  } catch {
-    return NextResponse.redirect(home);
-  }
-
-  const { data: coupon } = await db
+  const { data: coupon } = await supabase
     .from("coupons")
     .select("id, affiliate_url, affiliate_network, store:stores(website_url)")
     .eq("id", params.id)
     .single();
 
   if (!coupon) return NextResponse.redirect(home);
-
-  // Record the click (best effort — a logging failure must not block the redirect).
-  await db.from("clicks").insert({
-    coupon_id: coupon.id,
-    referrer: req.headers.get("referer"),
-  });
 
   const rawStore = (coupon as unknown as { store?: unknown }).store;
   const store = Array.isArray(rawStore) ? rawStore[0] : rawStore;
@@ -72,8 +66,22 @@ export async function GET(
     affiliateUrl !== null &&
     (storeUrl === null || !isStoreHomepage(affiliateUrl, storeUrl));
 
-  const destination = useAffiliate ? affiliateUrl! : storeUrl ?? null;
+  const destination = useAffiliate
+    ? affiliateUrl!
+    : storeUrl ?? affiliateUrl ?? null;
   if (!destination) return NextResponse.redirect(home);
+
+  // Record the click (best effort — a logging failure must not block
+  // the redirect, and a missing service key must not break Shop Now).
+  try {
+    const db = getServiceClient();
+    await db.from("clicks").insert({
+      coupon_id: coupon.id,
+      referrer: req.headers.get("referer"),
+    });
+  } catch {
+    /* click logging is best-effort only */
+  }
 
   return NextResponse.redirect(destination);
 }
