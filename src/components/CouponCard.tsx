@@ -23,6 +23,12 @@ export default function CouponCard({
   const storeName = coupon.store?.name ?? "Store";
 
   async function handleShowCode() {
+    // Open the store through the affiliate/tracking link FIRST, synchronously
+    // in this click handler, so the browser treats it as a user gesture and
+    // does not block the new tab. This drops the affiliate cookie BEFORE the
+    // visitor shops, so the sale still counts even if they never click
+    // "Shop Now" afterwards. The code reveal + copy below is unchanged.
+    window.open(`/api/go/${coupon.id}`, "_blank", "noopener");
     setRevealed(true);
     if (coupon.code) {
       try {
