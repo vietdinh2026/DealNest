@@ -128,24 +128,30 @@ grant select on public.clicks to anon, authenticated;
 grant select on public.reports to anon, authenticated;
 grant select on public.submissions to anon, authenticated;
 
--- ---------- Seed data: SAMPLE starter catalog ----------
--- 12 sample US stores/coupons. Codes are SAMPLE codes, not real
--- working codes. is_verified is FALSE for every seed coupon — the
--- site never shows a fake "Verified" badge.
+-- ---------- Seed data: real public offers (verified 2026-11-21) ----------
+-- 12 real US store offers, checked against deal sites on Nov 21, 2026.
+-- Codes are PUBLIC offers, not affiliate codes — affiliate_url is the
+-- plain store URL and affiliate_network is NULL until each program
+-- approves DealNest. is_verified is FALSE for every seed coupon: the
+-- codes were verified from deal sites, not by placing test orders, so
+-- the site never shows a fake "Verified" badge.
+-- To refresh the live site with these values, run
+-- supabase/real-coupons-2026-11-21.sql in the SQL Editor instead
+-- (this seed only inserts when the coupons table is empty).
 
 insert into stores (name, slug, website_url, description) values
-  ('Nike', 'nike', 'https://www.nike.com', 'Athletic shoes, apparel and gear.'),
-  ('Sephora', 'sephora', 'https://www.sephora.com', 'Beauty, skincare, makeup and fragrance.'),
-  ('Chewy', 'chewy', 'https://www.chewy.com', 'Pet food, treats, toys and supplies.'),
-  ('NordVPN', 'nordvpn', 'https://nordvpn.com', 'VPN and online security software.'),
-  ('Wayfair', 'wayfair', 'https://www.wayfair.com', 'Furniture, home decor and appliances.'),
-  ('HelloFresh', 'hellofresh', 'https://www.hellofresh.com', 'Meal kit delivery service.'),
-  ('Adidas', 'adidas', 'https://www.adidas.com', 'Sportswear, shoes and accessories.'),
-  ('Ulta', 'ulta', 'https://www.ulta.com', 'Beauty products, salon services and fragrance.'),
-  ('Target', 'target', 'https://www.target.com', 'Everyday essentials, home, electronics and more.'),
-  ('Walmart', 'walmart', 'https://www.walmart.com', 'Groceries, electronics, home and everyday low prices.'),
-  ('Booking.com', 'booking', 'https://www.booking.com', 'Hotels, flights and vacation rentals worldwide.'),
-  ('Domino''s', 'dominos', 'https://www.dominos.com', 'Pizza delivery and carryout.')
+  ('Nike', 'nike', 'https://www.nike.com', 'Nike is the world''s leading sports brand, famous for running shoes, sneakers and athletic apparel. Shop authentic Nike gear with our latest promo codes.'),
+  ('Sephora', 'sephora', 'https://www.sephora.com', 'Sephora is the go-to beauty destination for makeup, skincare, fragrance and haircare. Save more with verified Sephora coupon codes.'),
+  ('Chewy', 'chewy', 'https://www.chewy.com', 'Chewy delivers pet food, treats, toys and supplies for dogs, cats and more, straight to your door.'),
+  ('NordVPN', 'nordvpn', 'https://nordvpn.com', 'NordVPN keeps your online activity private and secure with fast, reliable VPN protection.'),
+  ('Wayfair', 'wayfair', 'https://www.wayfair.com', 'Wayfair is one of the largest online furniture stores, with sofas, beds, rugs and decor for every room.'),
+  ('HelloFresh', 'hellofresh', 'https://www.hellofresh.com', 'HelloFresh delivers fresh ingredients and easy recipes to your door, making home cooking simple.'),
+  ('Adidas', 'adidas', 'https://www.adidas.com', 'Adidas blends sport and street style with iconic sneakers, running shoes and activewear.'),
+  ('Ulta', 'ulta', 'https://www.ulta.com', 'Ulta Beauty is America''s largest beauty retailer, with makeup, skincare, haircare and salon services.'),
+  ('Target', 'target', 'https://www.target.com', 'Target is your one-stop shop for everyday essentials, home goods, electronics, clothing and groceries.'),
+  ('Walmart', 'walmart', 'https://www.walmart.com', 'Walmart offers everyday low prices on groceries, electronics and home essentials, with free delivery over $35.'),
+  ('Booking.com', 'booking', 'https://www.booking.com', 'Booking.com is the world''s leading hotel booking site, with millions of properties worldwide.'),
+  ('Domino''s', 'dominos', 'https://www.dominos.com', 'Domino''s is America''s favorite pizza delivery chain, serving hot, fresh pizzas in 30 minutes or less.')
 on conflict (slug) do nothing;
 
 insert into coupons (store_id, title, code, description, discount_type, discount_value, affiliate_url, affiliate_network, category, expires_at, is_verified, status)
@@ -154,17 +160,17 @@ select s.id,
        c.affiliate_url, c.affiliate_network, c.category, c.expires_at::timestamptz, false, 'active'
 from stores s
 join (values
-  ('nike',     '20% Off Sitewide',                 'JUSTDOIT20', 'Save 20% on full-price shoes, apparel and gear.', 'percent', 20, 'https://www.nike.com', 'ShareASale', 'Fashion', '2027-01-31 23:59:59+00'),
-  ('sephora',  '15% Off Beauty & Skincare',       'GLOW15',     'Get 15% off makeup, skincare and fragrance.', 'percent', 15, 'https://www.sephora.com', 'Rakuten', 'Beauty', '2027-01-31 23:59:59+00'),
-  ('chewy',    '20% Off Your First Autoship',     'AUTOSHIP20', 'Save 20% on your first Autoship order of pet food and supplies.', 'percent', 20, 'https://www.chewy.com', 'CJ', 'Pets', '2027-02-28 23:59:59+00'),
-  ('nordvpn',  '68% Off the 2-Year Plan',         'NORDDEAL68', 'Huge savings on the 2-year VPN plan plus 3 extra months.', 'percent', 68, 'https://nordvpn.com', 'Impact', 'VPN & Software', '2027-02-28 23:59:59+00'),
-  ('wayfair',  'Up to 70% Off Furniture',         'HOME70',     'Up to 70% off sofas, beds, rugs and home decor.', 'percent', 70, 'https://www.wayfair.com', 'CJ', 'Home & Furniture', '2027-01-31 23:59:59+00'),
-  ('hellofresh','50% Off Your First Box',         'FRESH50',    'Get 50% off your first HelloFresh meal kit box.', 'percent', 50, 'https://www.hellofresh.com', 'Impact', 'Food & Meal Kits', '2027-02-28 23:59:59+00'),
-  ('adidas',   '25% Off Full-Price Items',        'ADI25',      'Save 25% on full-price sneakers, apparel and accessories.', 'percent', 25, 'https://www.adidas.com', 'Awin', 'Fashion', '2027-01-31 23:59:59+00'),
-  ('ulta',     '$10 Off Orders Over $50',         'ULTA10',     'Take $10 off your beauty order of $50 or more.', 'fixed', 10, 'https://www.ulta.com', 'Rakuten', 'Beauty', '2027-01-31 23:59:59+00'),
-  ('target',   '30% Off Home Essentials',         'TARGET30',   'Save 30% on bedding, bath, kitchen and home decor.', 'percent', 30, 'https://www.target.com', 'ShareASale', 'Home & Furniture', '2027-02-28 23:59:59+00'),
-  ('walmart',  '$20 Off Your First Grocery Order','WALMART20',  'Get $20 off your first Walmart grocery delivery order.', 'fixed', 20, 'https://www.walmart.com', 'Impact', 'Groceries', '2027-02-28 23:59:59+00'),
-  ('booking',  '15% Off Hotels Worldwide',        'STAY15',     'Save 15% on select hotels and vacation rentals.', 'percent', 15, 'https://www.booking.com', 'Awin', 'Travel', '2027-03-31 23:59:59+00'),
-  ('dominos',  '50% Off All Pizzas',              'PIZZA50',    'Half price on all pizzas for carryout or delivery.', 'percent', 50, 'https://www.dominos.com', 'ShareASale', 'Food & Meal Kits', '2027-01-31 23:59:59+00')
+  ('nike',     'Extra 25% Off Select Styles',            'EARLYBF',    'Nike''s early Black Friday code — extra 25% off select styles at checkout.', 'percent', 25, 'https://www.nike.com', null, 'Fashion', '2026-11-30 23:59:59+00'),
+  ('sephora',  '20% Off Any Purchase for Beauty Insiders','SPICEBOMB', '20% off any purchase for Beauty Insider members (free to join).', 'percent', 20, 'https://www.sephora.com', null, 'Beauty', '2026-11-30 23:59:59+00'),
+  ('chewy',    '50% Off Your First Autoship Order',      'MORE4LESS',  '50% off your first Autoship order on select pet food and supplies.', 'percent', 50, 'https://www.chewy.com', null, 'Pets', '2026-12-31 23:59:59+00'),
+  ('nordvpn',  'Up to 78% Off 2-Year Plans + 3 Free Months', null,     'Black Friday deal — up to 78% off 2-year plans plus 3 extra months free. No code needed.', 'percent', 78, 'https://nordvpn.com', null, 'VPN & Software', '2026-12-09 23:59:59+00'),
+  ('wayfair',  'Extra 10% Off Select Items in the App',  'APP10',      'Extra 10% off select furniture and home essentials in the Wayfair app.', 'percent', 10, 'https://www.wayfair.com', null, 'Home & Furniture', '2026-12-06 23:59:59+00'),
+  ('hellofresh','50% Off Your First Box',                'SOYUMMY4LIFE','50% off your first HelloFresh meal kit box for new customers.', 'percent', 50, 'https://www.hellofresh.com', null, 'Food & Meal Kits', null),
+  ('adidas',   '15% Off Qualifying Online Styles',       'DN15',       '15% off qualifying styles online — stacks with Black Friday sale prices.', 'percent', 15, 'https://www.adidas.com', null, 'Fashion', '2026-11-30 23:59:59+00'),
+  ('ulta',     '10% Off Sitewide',                      'FLEX10',     '10% off your Ulta Beauty order sitewide.', 'percent', 10, 'https://www.ulta.com', null, 'Beauty', null),
+  ('target',   '25% Off Eligible Items',                'STYLE',      '25% off eligible items at Target, online and in store.', 'percent', 25, 'https://www.target.com', null, 'Home & Furniture', '2026-12-31 23:59:59+00'),
+  ('walmart',  'Free Express Delivery on $35+ Holiday Orders','THANKFUL','Free Express Delivery on a $35+ order that includes a featured Thanksgiving item.', 'free_shipping', null, 'https://www.walmart.com', null, 'Groceries', '2026-11-30 23:59:59+00'),
+  ('booking',  'Black Friday: Up to 40% Off Stays Worldwide', null,   'Black Friday deals from 30% off, up to 40% off stays at participating properties. No code needed.', 'percent', 40, 'https://www.booking.com', null, 'Travel', '2026-12-02 23:59:59+00'),
+  ('dominos',  '50% Off Menu-Priced Pizzas',            '50OFF',      '50% off all menu-priced pizzas for carryout or delivery.', 'percent', 50, 'https://www.dominos.com', null, 'Food & Meal Kits', '2026-12-01 23:59:59+00')
 ) as c(slug, title, code, description, discount_type, discount_value, affiliate_url, affiliate_network, category, expires_at)
   on s.slug = c.slug;

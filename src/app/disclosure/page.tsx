@@ -10,22 +10,26 @@ export default function DisclosurePage() {
 
       <div className="mt-6 space-y-4 leading-relaxed text-slate-700">
         <p>
-          DealNest is a coupon-sharing website. Some of the links on this site are
-          affiliate links, which means we may earn a commission if you click a link
-          and make a purchase — <strong>at no additional cost to you</strong>.
+          DealNest is a coupon-sharing website. Right now, the links on this
+          site go <strong>directly to the store</strong> — they are not
+          affiliate links, and we do not earn a commission when you shop
+          through them.
         </p>
         <p>
-          We work with affiliate networks and programs including ShareASale,
-          Commission Junction (CJ), Impact, Rakuten Advertising, Awin and Amazon
-          Associates. When you shop through one of our links, the store or network
-          may pay us a percentage of your order or a fixed fee.
+          We are in the process of applying to affiliate networks and
+          programs (including ShareASale, Commission Junction (CJ), Impact,
+          Rakuten Advertising, Awin and Amazon Associates). Once a program
+          approves us, some links may become affiliate links, which means we
+          may earn a commission if you click a link and make a purchase —{" "}
+          <strong>at no additional cost to you</strong>. We will update this
+          page when that changes.
         </p>
         <p>
-          Affiliate commissions help us keep DealNest free and pay for the work of
-          finding, checking and updating coupon codes. They do not affect the price
-          you pay, and they do not influence which coupons we list: we publish
-          codes we believe will help you save, whether or not they earn us a
-          commission.
+          Affiliate commissions, when they exist, help us keep DealNest free
+          and pay for the work of finding, checking and updating coupon
+          codes. They do not affect the price you pay, and they do not
+          influence which coupons we list: we publish codes we believe will
+          help you save, whether or not they earn us a commission.
         </p>
         <p>
           Coupon codes can expire or stop working without notice. We do our best

@@ -112,6 +112,17 @@ git push -u origin main
 - To change the password, change the env var value and redeploy — all
   existing sessions stop working immediately.
 
+### 7. Real coupons (replacing the sample data)
+
+The seed in `supabase/schema.sql` is real public offers, verified
+2026-11-21. To update the **live** database without re-seeding, run
+`supabase/real-coupons-2026-11-21.sql` in the Supabase SQL Editor — it
+takes effect immediately, no redeploy needed. The links are plain store
+URLs (no affiliate links yet); update `affiliate_url` /
+`affiliate_network` per coupon when each affiliate program approves you.
+Codes expire fast — re-check them every 1–2 weeks and update or remove
+the expired ones (the daily cron already hides past-due coupons).
+
 ---
 
 ## Cài đặt (Tiếng Việt)

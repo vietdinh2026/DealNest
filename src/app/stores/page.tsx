@@ -1,4 +1,5 @@
 import Link from "next/link";
+import StoreLogo from "@/components/StoreLogo";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Store } from "@/lib/types";
 
@@ -36,8 +37,13 @@ export default async function StoresPage() {
               href={`/?store=${encodeURIComponent(s.name)}`}
               className="rounded-2xl border bg-white p-5 transition hover:shadow-md"
             >
-              <h2 className="text-lg font-bold">{s.name}</h2>
-              {s.description && <p className="mt-1 text-sm text-slate-600">{s.description}</p>}
+              <div className="flex items-center gap-3">
+                <StoreLogo name={s.name} websiteUrl={s.website_url} />
+                <h2 className="text-lg font-bold">{s.name}</h2>
+              </div>
+              {s.description && (
+                <p className="mt-3 text-sm text-slate-600">{s.description}</p>
+              )}
               {s.website_url && (
                 <p className="mt-2 text-xs text-slate-400">
                   {s.website_url.replace(/^https?:\/\//, "")}
