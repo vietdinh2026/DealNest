@@ -8,6 +8,11 @@ export async function getActiveCoupons(): Promise<{ coupons: Coupon[]; votes: Vo
     .from("coupons")
     .select("*, store:stores(*)")
     .eq("status", "active")
+    // Self-healing expiry: never show a coupon past its expiry date,
+    // even if the daily Vercel cron that flips status to "expired"
+    // has not run (or is not registered). Codes with no expiry date
+    // are always shown.
+    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
     .order("created_at", { ascending: false });
   if (error || !data) return { coupons: [], votes: {} };
 
@@ -52,6 +57,8 @@ export async function getCouponsForStore(
     .select("*, store:stores(*)")
     .eq("store_id", storeId)
     .eq("status", "active")
+    // Same self-healing expiry filter as getActiveCoupons.
+    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
     .order("created_at", { ascending: false });
   const coupons = (data ?? []) as Coupon[];
   const votes: VoteCounts = {};
