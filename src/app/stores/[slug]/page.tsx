@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CouponBoard from "@/components/CouponBoard";
+import StoreFaq from "@/components/StoreFaq";
 import StoreLogo from "@/components/StoreLogo";
 import { getCouponsForStore, getStoreBySlug } from "@/lib/data";
+import { buildStoreFaq, faqJsonLd } from "@/lib/faq";
 
 export const dynamic = "force-dynamic";
 // Never cache Supabase reads: without this, Next.js caches the fetch
@@ -41,9 +43,14 @@ export default async function StoreDetailPage({
   if (!store) notFound();
 
   const { coupons, votes } = await getCouponsForStore(store.id);
+  const faqs = buildStoreFaq(store, coupons);
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }}
+      />
       <Link
         href="/stores"
         className="text-sm font-semibold text-brand-700 hover:underline"
@@ -85,6 +92,8 @@ export default async function StoreDetailPage({
           initialStore={store.name}
         />
       </div>
+
+      <StoreFaq storeName={store.name} items={faqs} />
     </div>
   );
 }

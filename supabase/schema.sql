@@ -131,8 +131,9 @@ create policy "public read submissions" on submissions for select using (true);
 drop policy if exists "public read votes" on votes;
 create policy "public read votes" on votes for select using (true);
 
-drop policy if exists "public read contact_messages" on contact_messages;
-create policy "public read contact_messages" on contact_messages for select using (true);
+-- contact_messages has NO public read policy on purpose: messages contain
+-- visitors' names and emails. Only the owner (service_role, which
+-- bypasses RLS) can read them.
 
 -- ---------- Table privileges ----------
 -- RLS policies alone are NOT enough: the anon/authenticated roles also
@@ -144,7 +145,19 @@ grant select on public.votes to anon, authenticated;
 grant select on public.clicks to anon, authenticated;
 grant select on public.reports to anon, authenticated;
 grant select on public.submissions to anon, authenticated;
-grant select on public.contact_messages to anon, authenticated;
+
+-- Server writes go through the service_role key, which bypasses RLS but
+-- NOT table privileges. Since 2026-10-30 Supabase no longer auto-grants
+-- privileges on new tables, so every table the server writes to needs an
+-- explicit GRANT to service_role, or writes fail with 42501
+-- "permission denied for table ...".
+grant select, insert, update, delete on public.stores to service_role;
+grant select, insert, update, delete on public.coupons to service_role;
+grant select, insert, update, delete on public.votes to service_role;
+grant select, insert, update, delete on public.clicks to service_role;
+grant select, insert, update, delete on public.reports to service_role;
+grant select, insert, update, delete on public.submissions to service_role;
+grant select, insert, update, delete on public.contact_messages to service_role;
 
 -- ---------- Seed data: real public offers (verified 2026-11-21) ----------
 -- 12 real US store offers, checked against deal sites on Nov 21, 2026.
