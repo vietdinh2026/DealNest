@@ -42,6 +42,30 @@ export default async function Home({
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "DealNest",
+            url: "https://dealnest.online",
+            description:
+              "Verified coupons and promo codes from top US stores, checked daily.",
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "DealNest",
+            url: "https://dealnest.online",
+          }),
+        }}
+      />
       {/* Hero */}
       <section className="rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-10 text-white sm:px-10">
         <h1 className="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
@@ -79,6 +103,47 @@ export default async function Home({
       <div id="coupons" className="mt-8">
         <CouponBoard coupons={coupons} votes={votes} />
       </div>
+
+      {/* Savings guides */}
+      <section className="mt-12">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-2xl font-extrabold">Savings guides</h2>
+          <Link
+            href="/guides"
+            className="text-sm font-semibold text-brand-700 hover:underline"
+          >
+            All guides →
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          {[
+            {
+              href: "/guides/how-to-save-at-nike",
+              title: "How to Save at Nike",
+              text: "Promo codes, free membership perks and the best sale windows.",
+            },
+            {
+              href: "/guides/how-to-save-at-chewy",
+              title: "How to Save at Chewy",
+              text: "First Autoship discounts, free shipping and 5% off every order.",
+            },
+            {
+              href: "/guides/black-friday-2026",
+              title: "Black Friday 2026",
+              text: "The biggest live codes and deals, updated daily.",
+            },
+          ].map((g) => (
+            <Link
+              key={g.href}
+              href={g.href}
+              className="rounded-2xl border bg-white p-5 hover:border-brand-300"
+            >
+              <h3 className="font-bold">{g.title}</h3>
+              <p className="mt-1 text-sm text-slate-600">{g.text}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* How it works */}
       <section className="mt-12 grid gap-4 sm:grid-cols-3">

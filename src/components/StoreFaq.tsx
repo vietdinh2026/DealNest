@@ -4,10 +4,10 @@ import { useState } from "react";
 import type { FaqItem } from "@/lib/faq";
 
 export default function StoreFaq({
-  storeName,
+  title,
   items,
 }: {
-  storeName: string;
+  title: string;
   items: FaqItem[];
 }) {
   const [open, setOpen] = useState<number | null>(0);
@@ -16,9 +16,7 @@ export default function StoreFaq({
 
   return (
     <section className="mt-12">
-      <h2 className="text-2xl font-extrabold">
-        Frequently asked questions about {storeName}
-      </h2>
+      <h2 className="text-2xl font-extrabold">{title}</h2>
       <div className="mt-4 space-y-3">
         {items.map((item, i) => {
           const isOpen = open === i;

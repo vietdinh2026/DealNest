@@ -33,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="flex items-center gap-1 text-sm font-medium sm:gap-2">
               <Link href="/" className="rounded-lg px-3 py-2 hover:bg-slate-100">Coupons</Link>
               <Link href="/stores" className="rounded-lg px-3 py-2 hover:bg-slate-100">Stores</Link>
+              <Link href="/guides" className="rounded-lg px-3 py-2 hover:bg-slate-100">Guides</Link>
               <Link href="/submit" className="rounded-lg px-3 py-2 hover:bg-slate-100">Submit a Coupon</Link>
               <Link href="/admin" className="rounded-lg px-3 py-2 text-slate-500 hover:bg-slate-100">Owner</Link>
             </nav>
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/contact" className="hover:text-slate-900">Contact</Link>
               <Link href="/privacy" className="hover:text-slate-900">Privacy Policy</Link>
               <Link href="/disclosure" className="hover:text-slate-900">Affiliate Disclosure</Link>
+              <Link href="/guides" className="hover:text-slate-900">Savings Guides</Link>
               <Link href="/submit" className="hover:text-slate-900">Submit a Coupon</Link>
               <Link href="/stores" className="hover:text-slate-900">All Stores</Link>
             </div>
