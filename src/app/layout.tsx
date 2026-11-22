@@ -44,6 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="border-t bg-white">
           <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-500">
             <div className="flex flex-wrap gap-x-6 gap-y-2">
+              <Link href="/about" className="hover:text-slate-900">About Us</Link>
+              <Link href="/contact" className="hover:text-slate-900">Contact</Link>
+              <Link href="/privacy" className="hover:text-slate-900">Privacy Policy</Link>
               <Link href="/disclosure" className="hover:text-slate-900">Affiliate Disclosure</Link>
               <Link href="/submit" className="hover:text-slate-900">Submit a Coupon</Link>
               <Link href="/stores" className="hover:text-slate-900">All Stores</Link>

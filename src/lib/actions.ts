@@ -49,6 +49,27 @@ export async function submitCoupon(formData: FormData) {
   return { ok: true };
 }
 
+export async function sendContactMessage(formData: FormData) {
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim();
+  const topic = String(formData.get("topic") ?? "Other").trim();
+  const message = String(formData.get("message") ?? "").trim();
+  if (!name || !email || !message) {
+    return { ok: false, error: "Name, email and message are required." };
+  }
+  if (!isSupabaseConfigured()) return { ok: false, error: "Database not configured." };
+  const db = getServiceClient();
+  const { error } = await db.from("contact_messages").insert({
+    name,
+    email,
+    topic,
+    message,
+    status: "open",
+  });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 /* ------------------------------------------------------------------ */
 /* Admin actions (TODO: protect /admin with a password before going    */
 /* live — see README.md. These actions currently have no auth.)       */

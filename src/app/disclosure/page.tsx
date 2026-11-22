@@ -42,7 +42,11 @@ export default function DisclosurePage() {
           This disclosure is provided in accordance with the U.S. Federal Trade
           Commission&apos;s guidelines on endorsements and testimonials (16 CFR
           Part 255). If you have any questions about how affiliate links work on
-          DealNest, contact us at the email address listed on our submission page.
+          DealNest, contact us through our{" "}
+          <a href="/contact" className="underline">
+            Contact
+          </a>{" "}
+          page.
         </p>
       </div>
     </div>

@@ -74,6 +74,18 @@ create table if not exists votes (
   created_at timestamptz not null default now()
 );
 
+-- Messages sent through the /contact page
+create table if not exists contact_messages (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  topic text not null default 'Other',
+  message text not null,
+  status text not null default 'open'
+    check (status in ('open', 'resolved')),
+  created_at timestamptz not null default now()
+);
+
 -- ---------- Indexes ----------
 
 create index if not exists idx_coupons_store_id on coupons(store_id);
@@ -86,6 +98,7 @@ create index if not exists idx_reports_coupon_id on reports(coupon_id);
 create index if not exists idx_reports_status on reports(status);
 create index if not exists idx_submissions_status on submissions(status);
 create index if not exists idx_votes_coupon_id on votes(coupon_id);
+create index if not exists idx_contact_messages_status on contact_messages(status);
 
 -- ---------- Row Level Security ----------
 -- Public read access for the storefront; writes go through the
@@ -98,6 +111,7 @@ alter table clicks enable row level security;
 alter table reports enable row level security;
 alter table submissions enable row level security;
 alter table votes enable row level security;
+alter table contact_messages enable row level security;
 
 drop policy if exists "public read stores" on stores;
 create policy "public read stores" on stores for select using (true);
@@ -117,6 +131,9 @@ create policy "public read submissions" on submissions for select using (true);
 drop policy if exists "public read votes" on votes;
 create policy "public read votes" on votes for select using (true);
 
+drop policy if exists "public read contact_messages" on contact_messages;
+create policy "public read contact_messages" on contact_messages for select using (true);
+
 -- ---------- Table privileges ----------
 -- RLS policies alone are NOT enough: the anon/authenticated roles also
 -- need SELECT privileges on the tables, otherwise every read fails with
@@ -127,6 +144,7 @@ grant select on public.votes to anon, authenticated;
 grant select on public.clicks to anon, authenticated;
 grant select on public.reports to anon, authenticated;
 grant select on public.submissions to anon, authenticated;
+grant select on public.contact_messages to anon, authenticated;
 
 -- ---------- Seed data: real public offers (verified 2026-11-21) ----------
 -- 12 real US store offers, checked against deal sites on Nov 21, 2026.
