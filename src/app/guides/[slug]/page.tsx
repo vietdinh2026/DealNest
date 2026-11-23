@@ -10,16 +10,40 @@ import { getGuide } from "@/lib/guides";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  return (rawUrl || fallback).trim().replace(/\/+$/, "");
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   const guide = getGuide(params.slug);
-  if (!guide) return { title: "Guide not found — DealNest" };
+  if (!guide) {
+    return {
+      title: "Guide Not Found",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const canonicalPath = `/guides/${guide.slug}`;
+  const updatedIso = (guide as typeof guide & { updatedAt?: string }).updatedAt;
+
   return {
-    title: `${guide.title} | DealNest`,
+    title: guide.title,
     description: guide.description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${guide.title} | DealNest`,
+      description: guide.description,
+      url: canonicalPath,
+      type: "article",
+      ...(updatedIso ? { modifiedTime: updatedIso, publishedTime: updatedIso } : {}),
+    },
   };
 }
 
@@ -48,8 +72,10 @@ export default async function GuidePage({
   const guide = getGuide(params.slug);
   if (!guide) notFound();
 
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online";
+  const base = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  const articleUrl = `${base}/guides/${guide.slug}`;
+  const updatedIso =
+    (guide as typeof guide & { updatedAt?: string }).updatedAt ?? "2026-11-21";
 
   // Live codes: the guide's own store, or the biggest live offers for
   // the Black Friday guide (no single store).
@@ -57,6 +83,7 @@ export default async function GuidePage({
     [];
   let liveVotes: Awaited<ReturnType<typeof getActiveCoupons>>["votes"] = {};
   let storeName: string | null = null;
+
   if (guide.storeSlug) {
     const store = await getStoreBySlug(guide.storeSlug);
     if (store) {
@@ -73,19 +100,27 @@ export default async function GuidePage({
       .slice(0, 8);
   }
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: guide.title,
+    description: guide.description,
+    datePublished: updatedIso,
+    dateModified: updatedIso,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    author: { "@type": "Organization", name: "DealNest", url: base },
+    publisher: { "@type": "Organization", name: "DealNest", url: base },
+  };
+
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: guide.title,
-            description: guide.description,
-            author: { "@type": "Organization", name: "DealNest" },
-            publisher: { "@type": "Organization", name: "DealNest" },
-          }),
+          __html: JSON.stringify(articleJsonLd),
         }}
       />
       <script
@@ -99,7 +134,7 @@ export default async function GuidePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(guide.faqs)) }}
       />
 
-      <nav className="text-sm text-slate-500">
+      <nav aria-label="Breadcrumb" className="text-sm text-slate-500">
         <Link href="/" className="hover:underline">
           Home
         </Link>
@@ -115,7 +150,7 @@ export default async function GuidePage({
         {guide.title}
       </h1>
       <p className="mt-2 text-sm text-slate-500">
-        Last updated: November 2026 · DealNest
+        Last updated: <time dateTime={updatedIso}>November 2026</time> · DealNest
       </p>
 
       <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-slate-700">
