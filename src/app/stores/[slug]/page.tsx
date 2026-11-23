@@ -14,24 +14,57 @@ export const dynamic = "force-dynamic";
 // descriptions) would not show up until a redeploy.
 export const revalidate = 0;
 
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  return (rawUrl || fallback).trim().replace(/\/+$/, "");
+}
+
+function getBestDiscountLabel(
+  coupons: Array<{ discount_value?: number | null }>
+): string {
+  const best = coupons.reduce(
+    (max, c) => Math.max(max, c.discount_value ?? 0),
+    0
+  );
+  return best > 0 ? `Up to ${best}% Off` : "Latest Deals";
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   const store = await getStoreBySlug(params.slug);
-  if (!store) return { title: "Store not found — DealNest" };
+  if (!store) {
+    return {
+      title: "Store Not Found",
+      robots: { index: false, follow: false },
+    };
+  }
+
   const { coupons } = await getCouponsForStore(store.id);
-  const best = coupons.reduce(
-    (max, c) => Math.max(max, c.discount_value ?? 0),
-    0
-  );
-  const discount = best > 0 ? `${best}% off` : "deals";
+  const discountLabel = getBestDiscountLabel(coupons);
+  const title = `${store.name} Promo Codes — ${discountLabel}`;
+  const fallbackDescription = `Save at ${store.name} with ${
+    coupons.length > 0 ? `${coupons.length} active coupon${coupons.length === 1 ? "" : "s"}` : "verified promo codes"
+  } and deals on DealNest.`;
+  const description = store.description?.trim()
+    ? `${store.description.trim()} (${discountLabel})`
+    : fallbackDescription;
+  const canonicalPath = `/stores/${store.slug}`;
+
   return {
-    title: `${store.name} Promo Code — ${discount} | DealNest`,
-    description:
-      store.description ??
-      `Save at ${store.name} with the latest DealNest promo codes and deals.`,
+    title,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${title} | DealNest`,
+      description,
+      url: canonicalPath,
+      type: "website",
+    },
   };
 }
 
@@ -56,14 +89,32 @@ export default async function StoreDetailPage({
     if (!myCategories.has(c.category)) continue;
     const prev = relatedMap.get(c.store.slug);
     const best = Math.max(prev?.best ?? 0, c.discount_value ?? 0);
-    relatedMap.set(c.store.slug, { name: c.store.name, slug: c.store.slug, best });
+    relatedMap.set(c.store.slug, {
+      name: c.store.name,
+      slug: c.store.slug,
+      best,
+    });
   }
   const related = Array.from(relatedMap.values())
     .sort((a, b) => b.best - a.best)
     .slice(0, 4);
 
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online";
+  const base = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${base}/` },
+      { "@type": "ListItem", position: 2, name: "Stores", item: `${base}/stores` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: store.name,
+        item: `${base}/stores/${store.slug}`,
+      },
+    ],
+  };
 
   return (
     <div>
@@ -73,22 +124,7 @@ export default async function StoreDetailPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: `${base}/` },
-              { "@type": "ListItem", position: 2, name: "Stores", item: `${base}/stores` },
-              {
-                "@type": "ListItem",
-                position: 3,
-                name: store.name,
-                item: `${base}/stores/${store.slug}`,
-              },
-            ],
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Link
         href="/stores"
@@ -116,7 +152,7 @@ export default async function StoreDetailPage({
             )}
             <p className="mt-3 text-sm text-slate-400">
               {store.website_url?.replace(/^https?:\/\//, "")}
-              {" · "}
+              {store.website_url ? " · " : ""}
               {coupons.length} active coupon
               {coupons.length === 1 ? "" : "s"}
             </p>
