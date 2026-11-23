@@ -1,13 +1,23 @@
 import type { MetadataRoute } from "next";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  const value = (rawUrl || fallback).trim();
+  return value.replace(/\/+$/, "");
+}
 
 export default function robots(): MetadataRoute.Robots {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online";
+  const base = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+
   return {
-    rules: [{ userAgent: "*", allow: "/" }],
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/admin/", "/login/", "/api/"],
+      },
+    ],
     sitemap: `${base}/sitemap.xml`,
+    host: base,
   };
 }
