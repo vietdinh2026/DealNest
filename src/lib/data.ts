@@ -1,9 +1,29 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
 import type { Coupon, Store, VoteCounts } from "./types";
 
+function activeExpiryFilter(): string {
+  return `expires_at.is.null,expires_at.gt.${new Date().toISOString()}`;
+}
+
+function aggregateVotes(
+  voteRows: Array<{ coupon_id: string; vote: string }> | null | undefined
+): VoteCounts {
+  const votes: VoteCounts = {};
+  for (const row of voteRows ?? []) {
+    votes[row.coupon_id] ??= { up: 0, down: 0 };
+    if (row.vote === "up") votes[row.coupon_id].up += 1;
+    else votes[row.coupon_id].down += 1;
+  }
+  return votes;
+}
+
 /** Load all active coupons (with store) + aggregated vote counts. */
-export async function getActiveCoupons(): Promise<{ coupons: Coupon[]; votes: VoteCounts }> {
+export async function getActiveCoupons(): Promise<{
+  coupons: Coupon[];
+  votes: VoteCounts;
+}> {
   if (!isSupabaseConfigured()) return { coupons: [], votes: {} };
+
   const { data, error } = await supabase
     .from("coupons")
     .select("*, store:stores(*)")
@@ -12,38 +32,50 @@ export async function getActiveCoupons(): Promise<{ coupons: Coupon[]; votes: Vo
     // even if the daily Vercel cron that flips status to "expired"
     // has not run (or is not registered). Codes with no expiry date
     // are always shown.
-    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
+    .or(activeExpiryFilter())
     .order("created_at", { ascending: false });
+
   if (error || !data) return { coupons: [], votes: {} };
 
-  const votes: VoteCounts = {};
-  const { data: voteRows } = await supabase.from("votes").select("coupon_id, vote");
-  for (const row of voteRows ?? []) {
-    votes[row.coupon_id] ??= { up: 0, down: 0 };
-    if (row.vote === "up") votes[row.coupon_id].up += 1;
-    else votes[row.coupon_id].down += 1;
-  }
-  return { coupons: data as Coupon[], votes };
+  const coupons = data as Coupon[];
+  if (coupons.length === 0) return { coupons: [], votes: {} };
+
+  const couponIds = coupons.map((c) => c.id);
+  const { data: voteRows } = await supabase
+    .from("votes")
+    .select("coupon_id, vote")
+    .in("coupon_id", couponIds);
+
+  return {
+    coupons,
+    votes: aggregateVotes(voteRows),
+  };
 }
 
 /** All stores, alphabetical — used by /stores and the sitemap. */
 export async function getAllStores(): Promise<Store[]> {
   if (!isSupabaseConfigured()) return [];
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("stores")
     .select("*")
     .order("name", { ascending: true });
-  return (data ?? []) as Store[];
+  if (error || !data) return [];
+  return data as Store[];
 }
 
 /** One store by its URL slug, e.g. "chewy". */
 export async function getStoreBySlug(slug: string): Promise<Store | null> {
   if (!isSupabaseConfigured()) return null;
-  const { data } = await supabase
+  const normalizedSlug = slug.trim().toLowerCase();
+  if (!normalizedSlug) return null;
+
+  const { data, error } = await supabase
     .from("stores")
     .select("*")
-    .eq("slug", slug)
-    .single();
+    .eq("slug", normalizedSlug)
+    .maybeSingle();
+
+  if (error) return null;
   return (data ?? null) as Store | null;
 }
 
@@ -51,37 +83,43 @@ export async function getStoreBySlug(slug: string): Promise<Store | null> {
 export async function getCouponsForStore(
   storeId: string
 ): Promise<{ coupons: Coupon[]; votes: VoteCounts }> {
-  if (!isSupabaseConfigured()) return { coupons: [], votes: {} };
-  const { data } = await supabase
+  if (!isSupabaseConfigured() || !storeId) return { coupons: [], votes: {} };
+
+  const { data, error } = await supabase
     .from("coupons")
     .select("*, store:stores(*)")
     .eq("store_id", storeId)
     .eq("status", "active")
     // Same self-healing expiry filter as getActiveCoupons.
-    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
+    .or(activeExpiryFilter())
     .order("created_at", { ascending: false });
-  const coupons = (data ?? []) as Coupon[];
-  const votes: VoteCounts = {};
-  if (coupons.length > 0) {
-    const { data: voteRows } = await supabase
-      .from("votes")
-      .select("coupon_id, vote")
-      .in(
-        "coupon_id",
-        coupons.map((c) => c.id)
-      );
-    for (const row of voteRows ?? []) {
-      votes[row.coupon_id] ??= { up: 0, down: 0 };
-      if (row.vote === "up") votes[row.coupon_id].up += 1;
-      else votes[row.coupon_id].down += 1;
-    }
-  }
-  return { coupons, votes };
+
+  if (error || !data) return { coupons: [], votes: {} };
+
+  const coupons = data as Coupon[];
+  if (coupons.length === 0) return { coupons: [], votes: {} };
+
+  const { data: voteRows } = await supabase
+    .from("votes")
+    .select("coupon_id, vote")
+    .in(
+      "coupon_id",
+      coupons.map((c) => c.id)
+    );
+
+  return {
+    coupons,
+    votes: aggregateVotes(voteRows),
+  };
 }
 
 export function formatDiscount(c: Coupon): string {
-  if (c.discount_type === "percent" && c.discount_value != null) return `${c.discount_value}% OFF`;
-  if (c.discount_type === "fixed" && c.discount_value != null) return `$${c.discount_value} OFF`;
+  if (c.discount_type === "percent" && c.discount_value != null) {
+    return `${c.discount_value}% OFF`;
+  }
+  if (c.discount_type === "fixed" && c.discount_value != null) {
+    return `$${c.discount_value} OFF`;
+  }
   if (c.discount_type === "free_shipping") return "FREE SHIPPING";
   return "DEAL";
 }
