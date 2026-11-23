@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import StoreLogo from "@/components/StoreLogo";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
@@ -9,6 +10,22 @@ export const dynamic = "force-dynamic";
 // descriptions) would not show up until a redeploy.
 export const revalidate = 0;
 
+export const metadata: Metadata = {
+  title: "Browse Stores",
+  description:
+    "Explore all stores on DealNest to find active coupon codes, promo deals, and savings across fashion, beauty, travel, home, and more.",
+  alternates: {
+    canonical: "/stores",
+  },
+  openGraph: {
+    title: "Browse Stores | DealNest",
+    description:
+      "Explore all stores on DealNest to find active coupon codes, promo deals, and savings across fashion, beauty, travel, home, and more.",
+    url: "/stores",
+    type: "website",
+  },
+};
+
 export default async function StoresPage() {
   let stores: Store[] = [];
   if (isSupabaseConfigured()) {
@@ -16,11 +33,41 @@ export default async function StoresPage() {
       .from("stores")
       .select("*")
       .order("name", { ascending: true });
-    stores = (data ?? []) as Store[];
+    stores = ((data ?? []) as Store[]).filter((s) => Boolean(s.slug));
   }
+
+  const baseUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online"
+  )
+    .trim()
+    .replace(/\/+$/, "");
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${baseUrl}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Stores",
+        item: `${baseUrl}/stores`,
+      },
+    ],
+  };
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <h1 className="text-3xl font-extrabold">Browse Stores</h1>
       <p className="mt-2 text-slate-600">
         Every store on DealNest, from fashion and beauty to travel and meal kits.
@@ -46,7 +93,9 @@ export default async function StoresPage() {
                 <h2 className="text-lg font-bold">{s.name}</h2>
               </div>
               {s.description && (
-                <p className="mt-3 text-sm text-slate-600">{s.description}</p>
+                <p className="mt-3 line-clamp-3 text-sm text-slate-600">
+                  {s.description}
+                </p>
               )}
               {s.website_url && (
                 <p className="mt-2 text-xs text-slate-400">
