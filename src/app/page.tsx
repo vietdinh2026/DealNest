@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import CouponBoard from "@/components/CouponBoard";
@@ -8,6 +9,27 @@ export const dynamic = "force-dynamic";
 // result from the first request and later SQL edits (new codes, new
 // descriptions) would not show up until a redeploy.
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "DealNest — Verified Coupons & Promo Codes",
+  description:
+    "Find working coupon codes and deals from top US stores. Save on fashion, beauty, pets, software, home goods and more.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "DealNest — Verified Coupons & Promo Codes",
+    description:
+      "Find working coupon codes and deals from top US stores. Save on fashion, beauty, pets, software, home goods and more.",
+    url: "/",
+    type: "website",
+  },
+};
+
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  return (rawUrl || fallback).trim().replace(/\/+$/, "");
+}
 
 export default async function Home({
   searchParams,
@@ -20,52 +42,56 @@ export default async function Home({
   // SEO-friendly store page (/stores/nike). The store page is the only
   // copy of the store header — the homepage must NOT render a second
   // copy of the same content.
-  const storeParam = searchParams?.store;
+  const storeParam = searchParams?.store?.trim().toLowerCase();
   if (storeParam) {
     const byName =
       coupons.find(
-        (c) => c.store?.name?.toLowerCase() === storeParam.toLowerCase()
+        (c) => c.store?.name?.toLowerCase() === storeParam
       )?.store ?? null;
     if (byName) redirect(`/stores/${byName.slug}`);
+
     // The store may have no active coupons, so look it up directly
     // by name or slug as a fallback.
     const stores = await getAllStores();
     const byStore =
       stores.find(
         (s) =>
-          s.name.toLowerCase() === storeParam.toLowerCase() ||
-          s.slug === storeParam.toLowerCase()
+          s.name.toLowerCase() === storeParam ||
+          s.slug.toLowerCase() === storeParam
       ) ?? null;
     if (byStore) redirect(`/stores/${byStore.slug}`);
     // Unknown store: fall through to the generic hero below.
   }
 
+  const baseUrl = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DealNest",
+    url: baseUrl,
+    description:
+      "Verified coupons and promo codes from top US stores, checked daily.",
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DealNest",
+    url: baseUrl,
+  };
+
   return (
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "DealNest",
-            url: "https://dealnest.online",
-            description:
-              "Verified coupons and promo codes from top US stores, checked daily.",
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "DealNest",
-            url: "https://dealnest.online",
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
+
       {/* Hero */}
       <section className="rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-10 text-white sm:px-10">
         <h1 className="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
