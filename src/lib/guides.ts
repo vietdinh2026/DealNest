@@ -10,3 +10,16 @@ export interface Guide {
   sections: GuideSection[];
   faqs: FaqItem[];
 }
+export function getGuide(slug: string): Guide | undefined {
+  const normalized = slug.trim().toLowerCase();
+  return GUIDES.find((g) => g.slug === normalized);
+}
+
+export function getGuideForStore(storeSlug: string): Guide | undefined {
+  const normalized = storeSlug.trim().toLowerCase();
+  return GUIDES.find((g) => g.storeSlug === normalized);
+}
+
+export function getAllGuideSlugs(): string[] {
+  return GUIDES.map((g) => g.slug);
+}
