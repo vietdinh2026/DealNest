@@ -3,14 +3,55 @@ import Link from "next/link";
 import { GUIDES } from "@/lib/guides";
 
 export const metadata: Metadata = {
-  title: "Savings Guides — DealNest",
+  title: "Savings Guides",
   description:
     "Step-by-step guides to saving at top US stores: Nike, Chewy, Black Friday 2026 and more. Real promo codes, membership perks and sale timing.",
+  alternates: {
+    canonical: "/guides",
+  },
+  openGraph: {
+    title: "Savings Guides | DealNest",
+    description:
+      "Step-by-step guides to saving at top US stores: Nike, Chewy, Black Friday 2026 and more. Real promo codes, membership perks and sale timing.",
+    url: "/guides",
+    type: "website",
+  },
 };
 
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  return (rawUrl || fallback).trim().replace(/\/+$/, "");
+}
+
 export default function GuidesPage() {
+  const baseUrl = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${baseUrl}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Savings Guides",
+        item: `${baseUrl}/guides`,
+      },
+    ],
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <h1 className="text-3xl font-extrabold">Savings Guides</h1>
       <p className="mt-2 max-w-2xl text-slate-600">
         Step-by-step guides to saving at the stores DealNest covers — how
