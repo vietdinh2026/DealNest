@@ -2,57 +2,73 @@ import type { MetadataRoute } from "next";
 import { getAllStores } from "@/lib/data";
 import { GUIDES } from "@/lib/guides";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// Cache sitemap theo chu kỳ (vd: 1 giờ) thay vì force-dynamic mọi request
+export const revalidate = 3600;
 
-/**
- * Sitemap: /, /stores, one /stores/[slug] per store, the guides and
- * the static info pages.
- * The base URL comes from NEXT_PUBLIC_SITE_URL — set it in Vercel to
- * https://dealnest.online (the default below is the same, so the
- * sitemap is correct even if the env var is missing).
- */
+function normalizeBaseUrl(rawUrl?: string): string {
+  const fallback = "https://dealnest.online";
+  const value = (rawUrl || fallback).trim();
+  return value.replace(/\/+$/, "");
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealnest.online";
+  const base = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
   const stores = await getAllStores();
-  const now = new Date();
+  const fallbackDate = new Date("2026-11-01T00:00:00.000Z");
+
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${base}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
+    {
+      url: base,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 1,
+    },
     {
       url: `${base}/stores`,
-      lastModified: now,
+      lastModified: fallbackDate,
       changeFrequency: "daily",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${base}/guides`,
-      lastModified: now,
+      lastModified: fallbackDate,
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    ...GUIDES.map((g) => ({
-      url: `${base}/guides/${g.slug}`,
-      lastModified: now,
+    ...GUIDES.map((guide) => ({
+      url: `${base}/guides/${guide.slug}`,
+      lastModified: fallbackDate,
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
-    ...["about", "contact", "privacy", "disclosure", "submit"].map(
-      (p) => ({
-        url: `${base}/${p}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.4,
-      })
-    ),
-  ];
-  return [
-    ...staticPages,
-    ...stores.map((s) => ({
-      url: `${base}/stores/${s.slug}`,
-      lastModified: now,
-      changeFrequency: "daily" as const,
-      priority: 0.9,
+    ...["about", "contact", "privacy", "disclosure", "submit"].map((slug) => ({
+      url: `${base}/${slug}`,
+      lastModified: fallbackDate,
+      changeFrequency: "monthly" as const,
+      priority: slug === "submit" ? 0.5 : 0.4,
     })),
   ];
+
+  const storePages: MetadataRoute.Sitemap = stores
+    .filter((store) => Boolean(store.slug))
+    .map((store) => {
+      const storeWithDate = store as typeof store & {
+        updated_at?: string | Date | null;
+        created_at?: string | Date | null;
+      };
+      const rawDate = storeWithDate.updated_at ?? storeWithDate.created_at;
+      const parsedDate = rawDate ? new Date(rawDate) : fallbackDate;
+      const lastModified = Number.isNaN(parsedDate.getTime())
+        ? fallbackDate
+        : parsedDate;
+
+      return {
+        url: `${base}/stores/${encodeURIComponent(store.slug)}`,
+        lastModified,
+        changeFrequency: "daily" as const,
+        priority: 0.9,
+      };
+    });
+
+  return [...staticPages, ...storePages];
 }
