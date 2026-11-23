@@ -20,6 +20,76 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "how-to-save-at-sephora",
+    title: "How to Save at Sephora: Beauty Insider, Promo Codes & Sale Events (2026)",
+    description:
+      "Practical ways to save at Sephora in 2026: Beauty Insider tiers, stackable promo codes, free sample perks, Birthday Gifts, and the best sale windows.",
+    updatedAt: "2026-11-24",
+    storeSlug: "sephora",
+    intro: [
+      "Sephora rarely runs random sitewide clearance markdowns every week, so knowing how Beauty Insider perks, promo codes, and seasonal events line up makes a big difference. A smart routine combines the right tier discount or promo code with free samples and timely reward redemptions.",
+      "Before checking out, look at the live Sephora offers listed on DealNest so you can compare active promo codes against whatever Beauty Insider perk or gift-with-purchase is running today.",
+    ],
+    sections: [
+      {
+        heading: "How Sephora promo codes and perks work",
+        paragraphs: [
+          "Sephora generally lets you apply one promo code per order at checkout. Depending on the campaign, a code may unlock a percentage off an eligible order, a targeted brand discount, a deluxe sample, or a free beauty bag when your cart hits a minimum spend.",
+          "Because codes rotate frequently and some have brand or item exclusions, always test the best active code in your bag before paying and check whether a gift-with-purchase gives you better value than a small point redemption.",
+        ],
+      },
+      {
+        heading: "Get more value from Beauty Insider",
+        paragraphs: [
+          "Beauty Insider is Sephora's free loyalty program and the easiest way to save consistently across the year. Members earn points on qualifying purchases, get a free Birthday Gift during their birthday month, and unlock seasonal Savings Events based on tier (Insider, VIB, and Rouge).",
+          "If you only shop occasionally, the free base tier still gets you points, birthday perks, and access to member promos without needing to force extra spend just to hit a higher tier.",
+        ],
+        bullets: [
+          "Free to join with points earned on eligible orders",
+          "Free Birthday Gift during your birthday month",
+          "Tiered access to seasonal Savings Events and member offers",
+          "Points can be redeemed in the Rewards Bazaar when available",
+        ],
+      },
+      {
+        heading: "Free shipping, samples, and smart cart habits",
+        paragraphs: [
+          "Beauty Insider members typically receive free standard shipping on orders without a shipping minimum, while adding free samples at checkout helps you test skincare or fragrance before committing to full sizes.",
+          "To avoid overspending on skincare, makeup, or haircare, keep a running wishlist of restocks and new launches, check unit prices or travel sizes first, and pair your order with an active live offer rather than buying on impulse.",
+        ],
+      },
+      {
+        heading: "Best times to shop Sephora",
+        paragraphs: [
+          "Sephora's biggest savings moments cluster around seasonal Beauty Insider Savings Events, Black Friday and Cyber Monday, and end-of-year holiday sets and value kits.",
+          "Value sets and holiday gift editions often deliver strong cost-per-milliliter value on popular skincare and fragrance, especially when paired with a timely promo code or member event.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the best Sephora promo code today?",
+        answer:
+          "Active Sephora promotions change regularly depending on current sales and events. Check the live Sephora codes on DealNest right before checkout to see what is currently working.",
+      },
+      {
+        question: "Can you stack multiple promo codes at Sephora?",
+        answer:
+          "Usually Sephora allows one promo code per order at checkout, so compare your options—such as an active code versus a points reward or gift-with-purchase—and pick the one that saves you the most.",
+      },
+      {
+        question: "Is Beauty Insider free to join?",
+        answer:
+          "Yes, joining Beauty Insider is free and lets you earn points on qualifying purchases, claim a birthday perk during your birthday month, and access member offers.",
+      },
+      {
+        question: "How do I get free samples on a Sephora order?",
+        answer:
+          "When eligible, you can select complimentary samples on the checkout or bag screen before completing your order, subject to availability.",
+      },
+    ],
+  },
+  {
     slug: "how-to-save-at-nike",
     title: "How to Save at Nike: Promo Codes, Membership & Sale Tips (2026)",
     description:
