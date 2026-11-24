@@ -53,6 +53,7 @@ export default async function Home({
   // copy of the store header — the homepage must NOT render a second
   // copy of the same content.
   const storeParam = searchParams?.store?.trim().toLowerCase();
+  let allStores = null;
   if (storeParam) {
     const byName =
       coupons.find(
@@ -62,9 +63,9 @@ export default async function Home({
 
     // The store may have no active coupons, so look it up directly
     // by name or slug as a fallback.
-    const stores = await getAllStores();
+    allStores = await getAllStores();
     const byStore =
-      stores.find(
+      allStores.find(
         (s) =>
           s.name.toLowerCase() === storeParam ||
           s.slug.toLowerCase() === storeParam
@@ -72,6 +73,27 @@ export default async function Home({
     if (byStore) redirect(`/stores/${byStore.slug}`);
     // Unknown store: fall through to the generic hero below.
   }
+
+  if (!allStores) {
+    allStores = await getAllStores();
+  }
+
+  const couponCountBySlug = new Map<string, number>();
+  for (const c of coupons) {
+    const slug = c.store?.slug;
+    if (slug) {
+      couponCountBySlug.set(slug, (couponCountBySlug.get(slug) ?? 0) + 1);
+    }
+  }
+
+  const popularStores = [...allStores]
+    .filter((s) => (couponCountBySlug.get(s.slug) ?? 0) > 0)
+    .sort(
+      (a, b) =>
+        (couponCountBySlug.get(b.slug) ?? 0) -
+        (couponCountBySlug.get(a.slug) ?? 0)
+    )
+    .slice(0, 8);
 
   const baseUrl = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
   const checkedDate = formatCurrentCheckedDate();
@@ -142,6 +164,40 @@ export default async function Home({
         members, so if one doesn&apos;t work, please report it with the “Report
         broken code” link on the coupon.
       </div>
+
+      {/* Popular stores */}
+      {popularStores.length > 0 && (
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="text-base font-extrabold tracking-tight text-slate-900">
+              Popular stores
+            </h2>
+            <Link
+              href="/stores"
+              className="text-sm font-bold text-brand-700 transition hover:text-brand-800 hover:underline"
+            >
+              All stores →
+            </Link>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {popularStores.map((store) => {
+              const count = couponCountBySlug.get(store.slug) ?? 0;
+              return (
+                <Link
+                  key={store.slug}
+                  href={`/stores/${store.slug}`}
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-sm font-semibold text-slate-800 transition hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700"
+                >
+                  <span>{store.name}</span>
+                  <span className="rounded-md bg-white px-1.5 py-0.5 text-xs font-bold text-slate-500 ring-1 ring-slate-200">
+                    {count}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Coupons */}
       <div id="coupons" className="scroll-mt-6">
