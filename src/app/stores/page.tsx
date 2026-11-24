@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import LatestGuidesSection from "@/components/LatestGuidesSection";
 import StoreLogo from "@/components/StoreLogo";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Store } from "@/lib/types";
@@ -106,6 +107,8 @@ export default async function StoresPage() {
           ))}
         </div>
       )}
+
+      <LatestGuidesSection className="mt-12" />
     </div>
   );
 }
