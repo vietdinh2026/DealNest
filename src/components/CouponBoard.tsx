@@ -64,7 +64,7 @@ export default function CouponBoard({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search coupons, stores, codes… (try “Chewy”)"
-          className="flex-1 rounded-xl border bg-white px-4 py-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+          className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
         />
         <select
           value={store}
