@@ -94,7 +94,7 @@ export default async function Home({
   };
 
   return (
-    <div>
+    <div className="space-y-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
@@ -105,24 +105,27 @@ export default async function Home({
       />
 
       {/* Hero */}
-      <section className="rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-10 text-white sm:px-10">
-        <h1 className="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
+      <section className="rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-slate-900 px-6 py-10 text-white shadow-md sm:px-10 sm:py-12">
+        <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide text-white">
+          Updated daily · US Stores
+        </span>
+        <h1 className="mt-3 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
           Coupons &amp; promo codes that actually work
         </h1>
-        <p className="mt-3 max-w-xl text-brand-100">
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-100">
           Hand-checked deals from top US stores. Click a coupon, copy the code,
           and save at checkout — our links go straight to the store.
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <a
             href="#coupons"
-            className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-brand-700"
+            className="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-brand-700 shadow-sm transition hover:bg-brand-50"
           >
             Browse coupons
           </a>
           <Link
             href="/submit"
-            className="rounded-xl border border-white/40 px-5 py-2.5 text-sm font-semibold text-white"
+            className="rounded-xl border border-white/50 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
           >
             Submit a coupon
           </Link>
@@ -130,64 +133,92 @@ export default async function Home({
       </section>
 
       {/* Real offers banner */}
-      <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-        <strong>Real offers, checked {checkedDate}:</strong> every coupon below
-        is a current public offer from the store — no sample codes. Offers
-        expire fast and some only work for new customers or members, so if
-        one doesn&apos;t work, please report it with the “Report broken code”
-        link on the coupon.
+      <div className="rounded-2xl border border-emerald-300 bg-emerald-50 px-5 py-3.5 text-sm leading-relaxed text-emerald-950 shadow-sm">
+        <strong className="font-bold text-emerald-900">
+          Real offers, checked {checkedDate}:
+        </strong>{" "}
+        every coupon below is a current public offer from the store — no sample
+        codes. Offers expire fast and some only work for new customers or
+        members, so if one doesn&apos;t work, please report it with the “Report
+        broken code” link on the coupon.
       </div>
 
-      <div id="coupons" className="mt-8">
+      {/* Coupons */}
+      <div id="coupons" className="scroll-mt-6">
         <CouponBoard coupons={coupons} votes={votes} />
       </div>
 
       {/* Savings guides */}
-      <section className="mt-12">
+      <section className="rounded-3xl border border-slate-200 bg-slate-50/80 p-6 shadow-sm sm:p-8">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-2xl font-extrabold">Savings guides</h2>
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
+              Savings guides
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Practical tips and promo code tricks before you check out.
+            </p>
+          </div>
           <Link
             href="/guides"
-            className="text-sm font-semibold text-brand-700 hover:underline"
+            className="shrink-0 text-sm font-bold text-brand-700 transition hover:text-brand-800 hover:underline"
           >
             All guides →
           </Link>
         </div>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className="mt-5 grid gap-4 sm:grid-cols-3">
           {latestGuides.map((g) => (
             <Link
               key={g.slug}
               href={`/guides/${g.slug}`}
-              className="rounded-2xl border bg-white p-5 hover:border-brand-300"
+              className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-400 hover:shadow-md"
             >
-              <h3 className="font-bold">{g.title}</h3>
-              <p className="mt-1 line-clamp-2 text-sm text-slate-600">
-                {g.description}
-              </p>
+              <div>
+                <h3 className="font-bold leading-snug text-slate-900 group-hover:text-brand-700">
+                  {g.title}
+                </h3>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-700">
+                  {g.description}
+                </p>
+              </div>
+              <span className="mt-4 inline-block text-xs font-bold text-brand-700">
+                Read guide →
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
       {/* How it works */}
-      <section className="mt-12 grid gap-4 sm:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-3">
         {[
           {
+            step: "01",
             title: "1. Find a deal",
             text: "Search or filter by store and category to find a coupon for what you're buying.",
           },
           {
+            step: "02",
             title: "2. Copy the code",
             text: "Tap “Show Code” to reveal and copy the promo code — or go straight to the store.",
           },
           {
+            step: "03",
             title: "3. Save at checkout",
             text: "Paste the code at checkout and save — no account or sign-up needed.",
           },
         ].map((s) => (
-          <div key={s.title} className="rounded-2xl border bg-white p-5">
-            <h3 className="font-bold">{s.title}</h3>
-            <p className="mt-1 text-sm text-slate-600">{s.text}</p>
+          <div
+            key={s.title}
+            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          >
+            <span className="text-xs font-extrabold tracking-wider text-brand-600">
+              STEP {s.step}
+            </span>
+            <h3 className="mt-1 font-bold text-slate-900">{s.title}</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+              {s.text}
+            </p>
           </div>
         ))}
       </section>
