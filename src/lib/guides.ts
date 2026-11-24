@@ -20,6 +20,89 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "black-friday-shopping-tips-2026",
+    title: "Black Friday Shopping Tips 2026: Don't Pay Full Price — Check for a Promo Code First",
+    description:
+      "Black Friday 2026 shopping tips: check for a promo code before you pay, stack sale prices with codes, avoid fake discounts, and know when to shop — with live codes for Kohl's, Macy's, Target, Sephora, Ulta, Chewy, Wayfair and more.",
+    updatedAt: "2026-11-24",
+    intro: [
+      "Black Friday 2026 falls on Friday, November 27, with Cyber Monday on Monday, November 30. The biggest mistake shoppers make is not a bad deal — it is a good deal paid for at full price because the promo code was never applied.",
+      "Before you pay for anything, check the live codes on the store's DealNest page, copy the best code, and paste it in the promo-code box before you pay. It takes 30 seconds, and it is the easiest saving of the whole weekend.",
+    ],
+    sections: [
+      {
+        heading: "Find a code before you check out — every time",
+        paragraphs: [
+          "Do this for every order: find the store on DealNest first, copy the live code, shop as normal, then paste the code in the promo-code box before you pay. Check that the total changed — if it did not, read the code's terms for a minimum spend or excluded brands, and try the next live code on the store page.",
+          "Codes change daily during Black Friday week, and the best ones can end before Friday itself. Check the live store page right before checkout, not a screenshot or a code from last week.",
+        ],
+        bullets: [
+          "Check the store's live codes on DealNest before you shop",
+          "Paste the code before you pay — most stores will not apply it afterwards",
+          "If no code works, use 'Report broken code' so DealNest can check it",
+        ],
+      },
+      {
+        heading: "Make a list and a budget first",
+        paragraphs: [
+          "Write down what you actually need, with the store and the price you would be happy to pay, and set a total budget for the weekend. Check the regular price before the sale, compare the same item at two stores, and do not buy a 'deal' on something you would not buy at full price.",
+        ],
+      },
+      {
+        heading: "Stack the savings: sale price + code + free shipping",
+        paragraphs: [
+          "The biggest wins come from stacking: shop the sale section first, apply a promo code on top, and use free membership shipping where it exists. Check delivery costs before you celebrate — a 20% code is worthless if delivery costs more than you saved.",
+        ],
+      },
+      {
+        heading: "Watch out for Black Friday traps",
+        paragraphs: [
+          "Check the minimum spend, excluded brands and categories, and the return policy before you buy — especially on sale and clearance items. Doorbusters sell out fast, and 'buy more, save more' is only worth it if you genuinely need the extra items.",
+        ],
+      },
+      {
+        heading: "Timing: don't wait for Friday if the code is good now",
+        paragraphs: [
+          "Early Black Friday sales start one to two weeks before Friday, November 27, and the best codes often appear in that early window. If you see a code you like, use it — Black Friday codes can end at midnight with no warning. Cyber Monday, November 30, is usually the best day for online-only codes.",
+        ],
+      },
+      {
+        heading: "Where to look first, by what you're buying",
+        paragraphs: [
+          "Fashion and department stores: Kohl's, Macy's, Adidas and Target. Beauty: Sephora and Ulta — compare the same product at both, as one code per order is the norm. Home: Wayfair, Walmart and Target. Pets: Chewy — compare the live code with the Autoship offer. Food: HelloFresh and Domino's. Travel: Booking.com — check stay dates and cancellation terms. Health and software: Puritan's Pride and NordVPN.",
+          "Every store above has a live code page on DealNest — open the store page from the guide's live offers or the All Stores page and check the codes there before you check out.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "When is Black Friday 2026?",
+        answer:
+          "Black Friday 2026 is Friday, November 27, 2026. Most stores start their sales one to two weeks early, and Cyber Monday follows on Monday, November 30, 2026.",
+      },
+      {
+        question: "Do I still need a promo code if the item is already on sale?",
+        answer:
+          "Yes — that is exactly when a code saves the most. Sale prices and promo codes usually stack, so the code is an extra discount on top of the sale price. Always check the store's live codes on DealNest before you pay.",
+      },
+      {
+        question: "Can I use more than one promo code on one order?",
+        answer:
+          "Usually no. Most stores allow one promo code per order, so compare the live codes on the store page and pick the one that saves the most.",
+      },
+      {
+        question: "What if the code doesn't work?",
+        answer:
+          "Check the minimum spend, expiry date and exclusions first. If it still does not work, try the next live code on the store page — and use 'Report broken code' on the coupon so DealNest can check it.",
+      },
+      {
+        question: "Do Black Friday promo codes expire quickly?",
+        answer:
+          "Yes. Black Friday codes often end at midnight or when the event ends. DealNest hides expired codes automatically, so anything listed on a store page is still within its dates — but use a code as soon as you find a good one.",
+      },
+    ],
+  },
+  {
     slug: "how-to-save-at-sephora",
     title: "How to Save at Sephora: Beauty Insider, Promo Codes & Sale Events (2026)",
     description:
@@ -279,90 +362,13 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
-  {
-    slug: "black-friday-shopping-tips-2026",
-    title: "Black Friday Shopping Tips 2026: Don't Pay Full Price — Check for a Promo Code First",
-    description:
-      "Black Friday 2026 shopping tips: check for a promo code before you pay, stack sale prices with codes, avoid fake discounts, and know when to shop — with live codes for Kohl's, Macy's, Target, Sephora, Ulta, Chewy, Wayfair and more.",
-    updatedAt: "2026-11-24",
-    intro: [
-      "Black Friday 2026 falls on Friday, November 27, with Cyber Monday on Monday, November 30. The biggest mistake shoppers make is not a bad deal — it is a good deal paid for at full price because the promo code was never applied.",
-      "Before you pay for anything, check the live codes on the store's DealNest page, copy the best code, and paste it in the promo-code box before you pay. It takes 30 seconds, and it is the easiest saving of the whole weekend.",
-    ],
-    sections: [
-      {
-        heading: "Find a code before you check out — every time",
-        paragraphs: [
-          "Do this for every order: find the store on DealNest first, copy the live code, shop as normal, then paste the code in the promo-code box before you pay. Check that the total changed — if it did not, read the code's terms for a minimum spend or excluded brands, and try the next live code on the store page.",
-          "Codes change daily during Black Friday week, and the best ones can end before Friday itself. Check the live store page right before checkout, not a screenshot or a code from last week.",
-        ],
-        bullets: [
-          "Check the store's live codes on DealNest before you shop",
-          "Paste the code before you pay — most stores will not apply it afterwards",
-          "If no code works, use 'Report broken code' so DealNest can check it",
-        ],
-      },
-      {
-        heading: "Make a list and a budget first",
-        paragraphs: [
-          "Write down what you actually need, with the store and the price you would be happy to pay, and set a total budget for the weekend. Check the regular price before the sale, compare the same item at two stores, and do not buy a 'deal' on something you would not buy at full price.",
-        ],
-      },
-      {
-        heading: "Stack the savings: sale price + code + free shipping",
-        paragraphs: [
-          "The biggest wins come from stacking: shop the sale section first, apply a promo code on top, and use free membership shipping where it exists. Check delivery costs before you celebrate — a 20% code is worthless if delivery costs more than you saved.",
-        ],
-      },
-      {
-        heading: "Watch out for Black Friday traps",
-        paragraphs: [
-          "Check the minimum spend, excluded brands and categories, and the return policy before you buy — especially on sale and clearance items. Doorbusters sell out fast, and 'buy more, save more' is only worth it if you genuinely need the extra items.",
-        ],
-      },
-      {
-        heading: "Timing: don't wait for Friday if the code is good now",
-        paragraphs: [
-          "Early Black Friday sales start one to two weeks before Friday, November 27, and the best codes often appear in that early window. If you see a code you like, use it — Black Friday codes can end at midnight with no warning. Cyber Monday, November 30, is usually the best day for online-only codes.",
-        ],
-      },
-      {
-        heading: "Where to look first, by what you're buying",
-        paragraphs: [
-          "Fashion and department stores: Kohl's, Macy's, Adidas and Target. Beauty: Sephora and Ulta — compare the same product at both, as one code per order is the norm. Home: Wayfair, Walmart and Target. Pets: Chewy — compare the live code with the Autoship offer. Food: HelloFresh and Domino's. Travel: Booking.com — check stay dates and cancellation terms. Health and software: Puritan's Pride and NordVPN.",
-          "Every store above has a live code page on DealNest — open the store page from the guide's live offers or the All Stores page and check the codes there before you check out.",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        question: "When is Black Friday 2026?",
-        answer:
-          "Black Friday 2026 is Friday, November 27, 2026. Most stores start their sales one to two weeks early, and Cyber Monday follows on Monday, November 30, 2026.",
-      },
-      {
-        question: "Do I still need a promo code if the item is already on sale?",
-        answer:
-          "Yes — that is exactly when a code saves the most. Sale prices and promo codes usually stack, so the code is an extra discount on top of the sale price. Always check the store's live codes on DealNest before you pay.",
-      },
-      {
-        question: "Can I use more than one promo code on one order?",
-        answer:
-          "Usually no. Most stores allow one promo code per order, so compare the live codes on the store page and pick the one that saves the most.",
-      },
-      {
-        question: "What if the code doesn't work?",
-        answer:
-          "Check the minimum spend, expiry date and exclusions first. If it still does not work, try the next live code on the store page — and use 'Report broken code' on the coupon so DealNest can check it.",
-      },
-      {
-        question: "Do Black Friday promo codes expire quickly?",
-        answer:
-          "Yes. Black Friday codes often end at midnight or when the event ends. DealNest hides expired codes automatically, so anything listed on a store page is still within its dates — but use a code as soon as you find a good one.",
-      },
-    ],
-  },
 ];
+
+export function getSortedGuides(): Guide[] {
+  return [...GUIDES].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+}
 
 export function getGuide(slug: string): Guide | undefined {
   const normalized = slug.trim().toLowerCase();
