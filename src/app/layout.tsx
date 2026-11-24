@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const rawSiteUrl =
@@ -36,39 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <header className="sticky top-0 z-40 border-b bg-white/90 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-            <Link
-              href="/"
-              className="text-2xl font-extrabold tracking-tight text-brand-600"
-            >
-              Deal<span className="text-slate-900">Nest</span>
-            </Link>
-            <nav
-              aria-label="Primary navigation"
-              className="flex items-center gap-1 text-sm font-medium sm:gap-2"
-            >
-              <Link href="/" className="rounded-lg px-3 py-2 hover:bg-slate-100">
-                Coupons
-              </Link>
-              <Link href="/stores" className="rounded-lg px-3 py-2 hover:bg-slate-100">
-                Stores
-              </Link>
-              <Link href="/guides" className="rounded-lg px-3 py-2 hover:bg-slate-100">
-                Guides
-              </Link>
-              <Link href="/submit" className="rounded-lg px-3 py-2 hover:bg-slate-100">
-                Submit a Coupon
-              </Link>
-              <Link
-                href="/admin"
-                className="rounded-lg px-3 py-2 text-slate-500 hover:bg-slate-100"
-              >
-                Owner
-              </Link>
-            </nav>
-          </div>
-        </header>
+        <Navbar />
 
         <main className="mx-auto min-h-[70vh] max-w-6xl px-4 py-8">{children}</main>
 
