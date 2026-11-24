@@ -155,15 +155,21 @@ export default async function Home({
       </section>
 
       {/* Real offers banner */}
-      <div className="rounded-2xl border border-emerald-300 bg-emerald-50 px-5 py-3.5 text-sm leading-relaxed text-emerald-950 shadow-sm">
-        <strong className="font-bold text-emerald-900">
-          Real offers, checked {checkedDate}:
-        </strong>{" "}
-        every coupon below is a current public offer from the store — no sample
-        codes. Offers expire fast and some only work for new customers or
-        members, so if one doesn&apos;t work, please report it with the “Report
-        broken code” link on the coupon.
-      </div>
+      <div className="flex items-start gap-3 rounded-2xl border border-brand-200/80 bg-brand-50/70 px-4 py-3 text-sm leading-relaxed text-slate-800 sm:px-5 sm:py-3.5">
+  <span
+    aria-hidden="true"
+    className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500"
+  />
+  <p>
+    <strong className="font-semibold text-slate-900">
+      Real offers, checked {checkedDate}:
+    </strong>{" "}
+    every coupon below is a current public offer from the store — no sample
+    codes. Offers expire fast and some only work for new customers or members,
+    so if one doesn&apos;t work, please report it with the &ldquo;Report broken
+    code&rdquo; link on the coupon.
+  </p>
+</div>
 
       {/* Popular stores */}
       {popularStores.length > 0 && (
