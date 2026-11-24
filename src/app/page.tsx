@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import CouponBoard from "@/components/CouponBoard";
 import { getActiveCoupons, getAllStores } from "@/lib/data";
+import { getSortedGuides } from "@/lib/guides";
 
 export const dynamic = "force-dynamic";
 // Never cache Supabase reads: without this, Next.js caches the fetch
@@ -29,6 +30,15 @@ export const metadata: Metadata = {
 function normalizeBaseUrl(rawUrl?: string): string {
   const fallback = "https://dealnest.online";
   return (rawUrl || fallback).trim().replace(/\/+$/, "");
+}
+
+function formatCurrentCheckedDate(): string {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "America/New_York",
+  }).format(new Date());
 }
 
 export default async function Home({
@@ -64,6 +74,8 @@ export default async function Home({
   }
 
   const baseUrl = normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  const checkedDate = formatCurrentCheckedDate();
+  const latestGuides = getSortedGuides().slice(0, 3);
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -119,7 +131,7 @@ export default async function Home({
 
       {/* Real offers banner */}
       <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-        <strong>Real offers, checked Nov 21, 2026:</strong> every coupon below
+        <strong>Real offers, checked {checkedDate}:</strong> every coupon below
         is a current public offer from the store — no sample codes. Offers
         expire fast and some only work for new customers or members, so if
         one doesn&apos;t work, please report it with the “Report broken code”
@@ -142,30 +154,16 @@ export default async function Home({
           </Link>
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          {[
-            {
-              href: "/guides/how-to-save-at-nike",
-              title: "How to Save at Nike",
-              text: "Promo codes, free membership perks and the best sale windows.",
-            },
-            {
-              href: "/guides/how-to-save-at-chewy",
-              title: "How to Save at Chewy",
-              text: "First Autoship discounts, free shipping and 5% off every order.",
-            },
-            {
-              href: "/guides/black-friday-2026",
-              title: "Black Friday 2026",
-              text: "The biggest live codes and deals, updated daily.",
-            },
-          ].map((g) => (
+          {latestGuides.map((g) => (
             <Link
-              key={g.href}
-              href={g.href}
+              key={g.slug}
+              href={`/guides/${g.slug}`}
               className="rounded-2xl border bg-white p-5 hover:border-brand-300"
             >
               <h3 className="font-bold">{g.title}</h3>
-              <p className="mt-1 text-sm text-slate-600">{g.text}</p>
+              <p className="mt-1 line-clamp-2 text-sm text-slate-600">
+                {g.description}
+              </p>
             </Link>
           ))}
         </div>
