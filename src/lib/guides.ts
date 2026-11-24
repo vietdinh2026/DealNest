@@ -20,6 +20,86 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "black-friday-shopping-tips-2026",
+    title: "Black Friday Shopping Tips: Checklist & Promo Code Tricks (2026)",
+    description:
+      "Essential Black Friday 2026 shopping tips: avoid fake markdowns, always check for stackable promo codes before checkout, and compare deals across top US stores.",
+    updatedAt: "2026-11-23",
+    intro: [
+      "Black Friday 2026 is full of flashing banners and countdown timers, but the biggest mistake shoppers make is hitting checkout on a sale price without checking for an extra promo code first. Many stores let you layer a coupon code, app discount, or member perk right on top of Black Friday markdowns.",
+      "Before you buy anything this week, run through this quick checklist and check the live store pages on [DealNest](/stores) so you never leave an easy discount behind.",
+    ],
+    sections: [
+      {
+        heading: "1. Never check out without searching for a promo code first",
+        paragraphs: [
+          "Advertised Black Friday prices are often only the first layer of savings. Retailers regularly release extra checkout codes for 10% to 25% off, app-only bonuses, or free shipping thresholds that stack with already-reduced items.",
+          "Before paying, open the store's dedicated coupon page on DealNest, test the active codes in your cart, and check whether an app offer or member code beats the public banner price. You can browse live codes across popular stores like [Nike](/stores/nike), [Adidas](/stores/adidas), [Target](/stores/target), [Walmart](/stores/walmart), [Kohl's](/stores/kohls), and [Macy's](/stores/macys).",
+        ],
+        bullets: [
+          "Check for an extra percentage-off code even when items are already marked down",
+          "Compare web checkout codes against app-exclusive promos before paying",
+          "Look for free shipping codes or lower member thresholds when buying small items",
+        ],
+      },
+      {
+        heading: "2. Verify real price drops vs. inflated 'was' prices",
+        paragraphs: [
+          "Not every 50% off tag during Black Friday week is an all-time low. Some retailers raise list prices in October so November discounts look bigger than they really are.",
+          "Make a shortlist of the exact models, sizes, or bundles you want ahead of time, compare unit prices across stores, and prioritize retailers that allow a promo code on top of the sale price—such as checking home deals at [Wayfair](/stores/wayfair) alongside [Target](/stores/target) or [Walmart](/stores/walmart).",
+        ],
+      },
+      {
+        heading: "3. Watch beauty, pet, and everyday restock exclusions",
+        paragraphs: [
+          "High-demand categories like skincare, fragrance, pet food, and wellness supplements often carry brand exclusions or tier rules during Black Friday. Reading the fine print before building a large cart saves time at checkout.",
+          "For beauty and personal care, compare tier discounts and gift-with-purchase offers on [Sephora](/stores/sephora) and [Ulta](/stores/ulta). For recurring household, pet, or health essentials, check first-order and Autoship promos on [Chewy](/stores/chewy) and sitewide codes on [Puritan's Pride](/stores/puritans-pride).",
+        ],
+        bullets: [
+          "Sign in to free loyalty accounts (like Beauty Insider or Nike Membership) before applying codes",
+          "Check minimum spend thresholds so your cart qualifies for bonus gifts or free delivery",
+          "Compare first-time subscriber or Autoship discounts against one-time promo codes",
+        ],
+      },
+      {
+        heading: "4. Don't overlook digital subscriptions, travel, and meal deals",
+        paragraphs: [
+          "Some of the steepest Black Friday discounts aren't physical products at all—software plans, hotel stays, and meal kits routinely drop to their lowest annual rates during Black Friday and Cyber Monday.",
+          "If you are planning winter travel, renewing security software, or ordering food during a busy shopping weekend, check live offers for [NordVPN](/stores/nordvpn), [Booking.com](/stores/booking), [HelloFresh](/stores/hellofresh), and [Domino's](/stores/dominos) before locking in full-price bookings or subscriptions.",
+        ],
+      },
+      {
+        heading: "5. Check return windows, stock limits, and code expiration times",
+        paragraphs: [
+          "Black Friday promo codes often expire at midnight or vanish early once promotional inventory sells out. At the same time, flash deals can come with shorter exchange windows or final-sale tags.",
+          "Use working codes as soon as your cart is ready, keep order confirmations handy, and revisit [all DealNest stores](/stores) on Cyber Monday (November 30, 2026) if an item you wanted sells out or switches to a fresh online-only code.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Why should I look for a promo code on Black Friday if items are already on sale?",
+        answer:
+          "Many stores allow an extra promo code, app offer, or member perk on top of Black Friday sale prices. Checking the store's page on DealNest takes seconds and can save an extra 10% to 25% or unlock free shipping.",
+      },
+      {
+        question: "Which stores on DealNest have Black Friday deals and promo codes?",
+        answer:
+          "You can check live offers across all 15 stores on DealNest, including Nike, Adidas, Sephora, Ulta, Target, Walmart, Kohl's, Macy's, Wayfair, Chewy, Puritan's Pride, NordVPN, Booking.com, HelloFresh, and Domino's.",
+      },
+      {
+        question: "Is it better to shop on Black Friday or wait for Cyber Monday?",
+        answer:
+          "Shop on Black Friday for limited-stock shoes, electronics, beauty sets, and doorbusters that sell out fast. Wait for Cyber Monday (November 30, 2026) if you want online-only promo codes, software subscriptions, or restocked apparel deals.",
+      },
+      {
+        question: "How do I avoid fake Black Friday discounts?",
+        answer:
+          "Track target prices before Thanksgiving week, compare the final cart total across two or three competing stores, and always test an active promo code at checkout rather than relying on the percentage-off sticker alone.",
+      },
+    ],
+  },
+  {
     slug: "how-to-save-at-sephora",
     title: "How to Save at Sephora: Beauty Insider, Promo Codes & Sale Events (2026)",
     description:
