@@ -16,8 +16,8 @@ export default function LatestGuidesSection({
 
   return (
     <section
-      className={`rounded-3xl border border-slate-200 bg-slate-50/80 p-5 shadow-sm sm:p-8 ${className}`.trim()}
-    >
+  className={`rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 ${className}`.trim()}
+>
       <div className="flex items-baseline justify-between gap-4">
         <div>
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
