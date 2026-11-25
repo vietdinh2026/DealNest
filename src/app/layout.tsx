@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     title: defaultTitle,
     description: defaultDescription,
   },
+  verification: {
+    other: {
+      "p:domain_verify": "8fa5e073f79954d33fbe8b11f0eef8e9",
+    },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
