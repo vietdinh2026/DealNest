@@ -20,6 +20,87 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "how-to-save-at-kohls",
+    title: "How to Save at Kohl's: Kohl's Cash, Rewards & Stacking (2026)",
+    description:
+      "How to save the most at Kohl's in 2026: earn Kohl's Cash during earn events, spend it inside the redemption window, stack it with coupons in the right order, and let Kohl's Rewards pay you back every month.",
+    updatedAt: "2026-11-26",
+    storeSlug: "kohls",
+    intro: [
+      "Kohl's does not save you money the way most stores do. Instead of one big discount, it pays you in Kohl's Cash — dollars you earn on one trip and spend on the next — and the whole game is timing: earn during the right window, then come back and spend it before the redemption window closes.",
+      "Add in the free Kohl's Rewards program, which turns 5% of everything you spend into more Kohl's Cash every month, and a Kohl's Card that lifts that rate to 7.5%, and a single order can earn three ways at once. This guide explains the order to use them in, what counts toward earning, and the traps that quietly eat your Kohl's Cash.",
+    ],
+    sections: [
+      {
+        heading: "Kohl's Cash: earn now, spend later — on Kohl's schedule",
+        paragraphs: [
+          "Kohl's Cash is a dollar-off coupon you earn during select promotional events: $10 for every $50 spent in a single transaction. Earning is counted on what you actually pay for merchandise after all discounts and coupons, before tax — so a $60 cart with a 20% coupon drops to $48 and earns nothing, while the same $60 at full price earns $10.",
+          "The catch is that earning and spending happen in two separate windows. You earn during the earn period, then you can only redeem during the dates printed on the coupon — not before, not after. In store you get a printed coupon with your receipt; online, at a kiosk or in the app, it arrives by email within 24 hours. Put the redemption dates in your calendar the day you earn it: the window is short, and unused Kohl's Cash is forfeited.",
+        ],
+        bullets: [
+          "Earn $10 Kohl's Cash for every $50 spent in one transaction, during earn events",
+          "Earning is counted after discounts, before tax — gift cards and Sephora at Kohl's purchases do not earn",
+          "Redeem only inside the printed window, in one transaction — any unused amount is lost",
+        ],
+      },
+      {
+        heading: "The stacking order decides how much you actually save",
+        paragraphs: [
+          "Kohl's lets you stack Kohl's Cash with promo codes — but the order they come off matters. Dollar-off discounts, including Kohl's Cash, are applied before percent-off coupons, so your percentage coupon applies to the smaller remaining total. A $100 cart with $20 of Kohl's Cash and a 25% coupon works out as $100 minus $20, then 25% off $80 — $60 in the end. If the percentage had applied first, the same order would have been $55.",
+          "That $5 difference is the price of stacking them together. The practical rule: when you hold a strong percent-off coupon, use it on a trip without Kohl's Cash and save the Kohl's Cash for a trip where you have no percentage code. When you do stack, you can apply up to four promo codes plus up to six Kohl's Cash vouchers on a single online order.",
+        ],
+        bullets: [
+          "Dollar-off coupons come off first, percent-off coupons second",
+          "Use a big percent-off coupon on its own trip when you can — Kohl's Cash shrinks what it applies to",
+          "Up to 4 promo codes and up to 6 Kohl's Cash vouchers per online order",
+        ],
+      },
+      {
+        heading: "Kohl's Rewards: 5% back every month, no card needed",
+        paragraphs: [
+          "Kohl's Rewards is free to join and needs no credit card: every qualifying purchase earns 5% back. On the first of each month your balance converts into Kohl's Cash in $5 increments — spend $100 in a month and $5 of Kohl's Cash lands in your account. Rewards-issued Kohl's Cash is valid for 30 days, and it stacks with event Kohl's Cash and promo codes.",
+          "This is the quiet earner most shoppers ignore, because nothing happens at the register. Check your balance at the start of the month and plan a small trip around it — a $5 coupon that expires unused is the same as paying $5 too much.",
+        ],
+      },
+      {
+        heading: "The Kohl's Card and MVC: worth it only if you shop here often",
+        paragraphs: [
+          "Paying with a Kohl's Card lifts your Rewards rate from 5% to 7.5% and comes with a 35% discount on your first purchase. Spend $600 on the card in a calendar year and you reach Most Valued Customer (MVC) status, which brings monthly free-shipping events with no minimum — otherwise free standard shipping starts at $49.",
+          "Do the math before you apply: if you spend well under $600 a year at Kohl's, the free Rewards tier already gives you most of the value, and the card's extra 2.5% will not change your year. If Kohl's is where you buy most of your family's clothes and home goods, the card plus MVC status pays for itself in shipping alone.",
+        ],
+      },
+      {
+        heading: "Black Friday Week: the one week the earn rate jumps",
+        paragraphs: [
+          "During Black Friday Week — November 22 to 28, 2026 — the earn rate rises to $15 of Kohl's Cash for every $50 spent, and the same rate carries into the Cyber Deals days of November 29 and 30. That is the best week of the year to plan a bigger earn trip: buy the gifts and winter clothes you were going to buy anyway, then return in the redemption window that follows to spend the Kohl's Cash on the things you held back.",
+          "Before you shop, open the Kohl's page on DealNest: the live offers there are what you can actually use today, and the guide above is how to make them worth more. Check the live codes again at checkout, because Kohl's Cash earn rates and coupon terms can change from one day of the event to the next.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "How does Kohl's Cash work?",
+        answer:
+          "During a Kohl's Cash earn event you get $10 in Kohl's Cash for every $50 you spend in a single transaction, counted after discounts and before tax. You then redeem it only during the redemption dates printed on the coupon — in store or on Kohls.com — and any unused amount is forfeited.",
+      },
+      {
+        question: "Can I use Kohl's Cash and a promo code together?",
+        answer:
+          "Yes, Kohl's Cash stacks with promo codes. Dollar-off discounts come off first and percent-off coupons second, so a percentage code applies to the smaller remaining total. You can use up to four promo codes and up to six Kohl's Cash vouchers on one online order.",
+      },
+      {
+        question: "Do I need a Kohl's Card to earn Kohl's Rewards?",
+        answer:
+          "No. Kohl's Rewards is free to join with no card and earns 5% back on qualifying purchases. A Kohl's Card raises the rate to 7.5% and adds first-purchase savings and MVC status at $600 of card spend per year.",
+      },
+      {
+        question: "What is the best Kohl's promo code today?",
+        answer:
+          "Kohl's codes change with each sale event, and the Kohl's Cash earn rate can change day to day during Black Friday Week. Check the live Kohl's codes on DealNest right before checkout to see what is currently working.",
+      },
+    ],
+  },
+  {
     slug: "black-friday-shopping-tips-2026",
     title: "Black Friday Shopping Tips 2026: Don't Pay Full Price — Check for a Promo Code First",
     description:
