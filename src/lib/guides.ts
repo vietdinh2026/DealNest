@@ -20,6 +20,98 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "cyber-monday-2026",
+    title: "Cyber Monday 2026: How to Win the Online-Only Deals (November 30)",
+    description:
+      "Cyber Monday 2026 is Monday, November 30: midnight deal drops, flash sales with timers, app-only codes and the tech that peaks on Monday — how to win the biggest online shopping day of the year.",
+    updatedAt: "2026-11-28",
+    intro: [
+      "Cyber Monday began as the online-only answer to Black Friday, and it has stayed that way: no queues, no parking lots, just a browser and a clock. In 2026 it falls on Monday, November 30, and Adobe expects Americans to spend over $15 billion online in a single day — the biggest online shopping day of the season.",
+      "That scale is also the trap. The best prices appear around midnight and disappear in hours, some discounts are real and some are dressed up, and the code that worked on Friday is already dead. This guide is about the mechanics that are specific to Monday: when the deals drop, how to be ready before they do, and how to tell a genuine cut from a fake one.",
+    ],
+    sections: [
+      {
+        heading: "The deals drop at midnight — and the good ones don't wait for morning",
+        paragraphs: [
+          "Many big stores open their Cyber Monday prices around midnight Eastern — 9 p.m. Sunday on the West Coast — and the deepest discounts are often flash deals with a countdown timer and a limited stock count. A laptop or a pair of headphones can be gone by breakfast, even though the sale page stays up all day.",
+          "So treat Monday morning as the second wave, not the start. If there is one item you really want, be there when the clock turns over on Sunday night. Everything after that is what's left — still worth checking, but not the price you saw advertised.",
+        ],
+        bullets: [
+          "Many stores go live around midnight Eastern, 9 p.m. Pacific on Sunday",
+          "Flash deals run on a timer and a stock counter — when either hits zero, the price is gone",
+          "Cyber Week keeps rolling after Monday, so a sold-out item can come back at a different price",
+        ],
+      },
+      {
+        heading: "Do your setup on Sunday night, not Monday morning",
+        paragraphs: [
+          "A flash deal gives you minutes, not an afternoon. On Sunday evening, sign in to the stores you plan to buy from, save your payment method and delivery address, and load the items you want into your cart or wishlist. Install the store's app too — some of Monday's best offers are app-only and never appear on the website.",
+          "The test is simple: if you had to buy something in under two minutes right now, could you? If the answer involves typing a card number or resetting a password, fix it on Sunday. Monday morning is for clicking Buy, not for admin.",
+        ],
+      },
+      {
+        heading: "How to tell a real price cut from a dressed-up one",
+        paragraphs: [
+          "A percentage off means nothing without the starting price. Before you trust a '60% off' badge, check what the item actually sold for a week ago — search the model name, look at the price history on a tracker, or compare the same item at a second store. If the 'was' price only appeared last week, the discount is mostly theatre.",
+          "Compare like with like, too: retailers run near-identical models with one letter different in the name, and the cheaper one may be last year's version. Match the full model number, not just the brand and the screen size, before you decide which store's deal is actually better.",
+        ],
+        bullets: [
+          "Check the price from a week ago before trusting a 'was' price",
+          "Compare the same item at a second store — the same model, not a lookalike",
+          "A big percentage on an inflated starting price is not a saving",
+        ],
+      },
+      {
+        heading: "What actually peaks on Cyber Monday",
+        paragraphs: [
+          "Monday has always leaned toward tech: laptops, headphones, tablets, small appliances and smart-home gear are the categories where the deepest cuts land on November 30 rather than on Friday. Fashion and beauty run strong online too — laptops, smaller electronics, online-exclusive apparel and prestige beauty usually peak on Monday or the Sunday before.",
+          "The flip side is what not to chase on Monday. Big items you want to see, sit on or try first — a sofa, a mattress, a pair of shoes in a tricky size — were Friday's in-store game. On Monday, buy the things you already know fit, and leave the try-before-you-buy items for a store visit.",
+        ],
+      },
+      {
+        heading: "Shipping and the Christmas clock",
+        paragraphs: [
+          "Cyber Monday still leaves plenty of time before Christmas: orders placed on November 30 arrive well ahead of the holiday with standard shipping at most big stores. What matters is the delivery estimate on the item itself — check it at checkout before you pay, because a deal that arrives after you need it is not a deal.",
+          "Many stores drop their free-shipping minimums for the day, but not all of them, so confirm the shipping cost on the final total rather than assuming it. Holiday return windows are often longer than usual, stretching into January at several big retailers — worth a glance at the store's returns page before you order gifts.",
+        ],
+      },
+      {
+        heading: "Missed it on Friday? Monday is your second chance",
+        paragraphs: [
+          "Stores know that plenty of shoppers missed the Black Friday code they wanted, so many release a fresh code just for Monday. On Monday morning, open the store's page on DealNest first: what you see there is live today, not a screenshot from Friday, and it is the fastest way to see whether a new code beats the automatic sale price.",
+          "And if the item you want sells out, don't pay a marked-up price somewhere else in a panic. Cyber Week deals run through the following days at several big stores — Walmart's event runs to December 2, Best Buy's Cyber Week to December 6 — so check back on the store page before you settle for second best.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "When is Cyber Monday 2026?",
+        answer:
+          "Cyber Monday 2026 is Monday, November 30, 2026 — three days after Black Friday (November 27). Adobe expects it to be the biggest online shopping day of the season, with over $15 billion spent online in a single day.",
+      },
+      {
+        question: "Is Cyber Monday better than Black Friday?",
+        answer:
+          "It depends on what you are buying. Cyber Monday is online-only and usually wins for tech — laptops, headphones, tablets and small appliances — while Black Friday is better for in-store doorbusters and items you want to see before you buy. The two days now share most of their catalogue, so the real difference is the channel, not the size of the discount.",
+      },
+      {
+        question: "What time do Cyber Monday deals start?",
+        answer:
+          "Many big stores go live around midnight Eastern on Monday, which is 9 p.m. Pacific on Sunday night. Walmart's event opens at 12:01 a.m. Eastern, and Amazon runs its event on Pacific time, so check the store's own page for the exact hour — and have your cart ready on Sunday evening either way.",
+      },
+      {
+        question: "Do I need a promo code on Cyber Monday?",
+        answer:
+          "Not always — many Cyber Monday discounts apply automatically at checkout. But several stores also release Monday-only codes, so it is worth opening the store's live page on DealNest on Monday morning to see whether a code beats the automatic price.",
+      },
+      {
+        question: "What if the deal I want sells out?",
+        answer:
+          "Check back during Cyber Week: several big stores keep deals running for days after Monday, and sold-out items sometimes come back. If the price you missed was on a specific model, compare the same model at a second store before paying more elsewhere.",
+      },
+    ],
+  },
+  {
     slug: "how-to-save-at-kohls",
     title: "How to Save at Kohl's: Kohl's Cash, Rewards & Stacking (2026)",
     description:
